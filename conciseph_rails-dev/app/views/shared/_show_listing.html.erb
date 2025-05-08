@@ -1,0 +1,44 @@
+  <%if user_actions.present?%>
+      <%user_actions.each do |user_action|%>
+      <tr><%member = user_action.user%>
+        <td>
+            <a href="#"  data-value="first">
+              <%=link_to (member.name||"no name") , user_action_path(user_action) , remote: true , class: "provider-name-td member-name"%> 
+            </a>
+            
+        </td>
+        <td>
+            <%=user_action.status%>
+        </td>
+        <td>
+            <%=user_action.acknowledge_at&.strftime('%d %b %Y') || '-'%>
+        </td>
+        <td>                                                              
+            <% last_action_taken = user_action&.user_action_steps.last%>                            
+            <%= last_action_taken ? last_action_taken.created_at.strftime("%d %b %Y ") : '' %>                               
+        </td>
+      </tr>
+      <%end%> 
+      <%= render partial: "/shared/pagination", locals: {objekt: @user_actions}%>
+  <%else %>
+    <tr class='no-records'>
+      <td colspan="4"class="text-center"><strong>No  User  Found</strong></td>
+      
+    </tr>
+  <%end%>                  
+  <script>
+  $(document).on('click', '.provider-name-td.member-name', function(event) {
+    event.preventDefault(); // Prevent default link behavior
+
+    $.ajax({
+      url: $(this).attr('href'),
+      success: function(response) {
+        // Update DOM based on the response data received from the server 
+        console.log(response); // For debugging, you can log the response here
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.error('Error:', textStatus, errorThrown); // Log any errors
+      }
+    });
+  });
+  </script>

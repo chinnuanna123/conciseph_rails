@@ -1,0 +1,17 @@
+<tr>
+    <td class="col-md-2"><%= action_step.name&.capitalize %></td>
+    <td class="col-md-3"><%= action_step.message %></td>
+    <td class="col-md-3">
+        <%= link_to truncate(artifact_description_arr[0], length: 20), url_for(artifact_description_arr[1].to_s), target: "_blank" %>
+    </td>
+    <td class="col-md-2">
+
+        <% if @user_action.status == "Not Started" %>
+            <span class="text-muted"> Not Started </span>
+        <% else %>
+        <span class="text-success"><%= status_and_time.present? && status_and_time[0].capitalize || 'Not Started' %></span>
+        <% end %>
+    </td>
+    <td class="col-md-2"><%=  status_and_time.present? && status_and_time[1]&.strftime("%d %b %Y %I:%M%p") || '' %></td>
+
+</tr>

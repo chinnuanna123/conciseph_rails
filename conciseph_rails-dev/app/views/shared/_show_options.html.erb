@@ -1,0 +1,90 @@
+<style>
+.modal-body {
+    padding: 20px;
+}
+
+.option-card {
+  padding: 30px;
+}
+
+.option-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.card-text {
+    font-size: 0.875rem;
+    color: #777;
+}
+
+.template-select {
+    max-width: 70%;
+}
+
+.btn-continue {
+    padding: 0.5rem 1.5rem;
+    font-size: 0.875rem;
+}
+
+.btn-primary, .btn-outline-primary {
+    border-radius: 20px;
+}
+
+.btn-outline-primary:hover {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+</style>
+<div class="container">
+        <!-- Card for Selecting Template -->
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+        <div class="card option-card mb-4 border-0">
+          <div class="card-body">
+              <h5 class="card-title">Select Template to Create Goal</h5>
+              <p class="card-text text-muted">Choose a template to streamline goal creation.</p>
+              <div class="d-flex align-items-center">
+                  
+                  <%=  select_tag 'template_id',options_for_select([['Select Template', '']] + CustomTemplate.where(campaign_name: CUSTOM_TEMPLATE__HASH[controller_name.singularize.camelcase.to_sym]).pluck(:name, :id)) , class: 'form-control template-select me-3'%>
+                  <%= link_to "Continue ", '#', class: 'btn btn-primary btn-continue with-template' %>
+              </div>
+          </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+      <div class="card option-card mb-4 border-0">
+          <div class="card-body">
+              <h5 class="card-title">Continue Without Template</h5>
+              <p class="card-text text-muted">Proceed without selecting a template to create a custom goal.</p>
+              <%= link_to "Continue Without Template", send("new_#{params[:controller].singularize}_path"), class: 'btn btn-outline-primary btn-continue without-template' %>
+          </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+<script>
+$(function(){
+  link = $('.by-goal').attr('href')
+  $('.btn-continue.without-template').attr('href', link)
+  setTemplateId(link)
+})
+
+function setTemplateId(tempLink){
+  $('#template_id').unbind('change').bind('change', function(){
+    templateId = $(this).val()
+    if(templateId !== ''){
+      TemplateLink = tempLink + `${tempLink.includes('?') ? '&' : '?'}template_id=${templateId}`
+      $('.btn-continue.with-template').attr('href', TemplateLink)
+    }
+    
+  })
+}
+</script> 

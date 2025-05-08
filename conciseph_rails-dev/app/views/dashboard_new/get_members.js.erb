@@ -1,0 +1,6 @@
+$('.count').removeClass('hide')
+$('#members-count').text('<%=@members_count%>')
+$('#members-count-wrapper').removeClass('hide')
+var $modal = $("#modal-default");
+$modal.find("#data-to-append").addClass("border-0")
+$modal.find("#data-to-append").html('<%= escape_javascript(render "shared/member_selection_listing", users: @members) %>');

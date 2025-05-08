@@ -1,0 +1,167 @@
+
+
+<div class="container mt-5">
+   <% model_name = controller_name.singularize %>
+   <div class="ledger mb-5">
+      <h5 class="ledger-title">Goal 
+         <% if !['timely_recovery_goal', 'custom_template'].include?(model_name) %>
+         <span class="pull-right">Target Members: <%= model&.user_actions_count %></span>
+         <% end %>
+      </h5>
+      <div class="ledger-content p-4 bg-white shadow-sm rounded">
+         <div class="row">
+            <table class="table  table-striped">
+               <tbody>
+                  <tr>
+                     <th>
+                        Name
+                     </th>
+                     <td>
+                        <%= model.name%>
+                     </td>
+                     <th>Status</th>
+                     <td>
+                        <span><b class="text-danger"><%= model_name == 'custom_template' ? (model.is_active ? 'Active' : 'Draft') : model.status%></b></span>
+                     </td>
+                  </tr>
+                  <%if !['timely_recovery_goal', 'custom_template'].include?(model_name)%>
+                  <tr>
+                     <th>Start Date</th>
+                     <td><%= model.start_date.strftime('%d %b %Y')%></td>
+                     <th>End Date</th>
+                     <td><%= model.end_date.strftime('%d %b %Y')%></td>
+                  </tr>
+                  <%elsif ['custom_template'].include?(model_name)%>
+                  <tr>
+                     <th>Function Area</th>
+                     <td><%= model.functional_area.titleize%></td>
+                     <th>Campaign Type</th>
+                     <td><%= model.campaign_name.titleize%></td>
+                  </tr>
+                  <%end%>
+                  <tr>
+                     <th>Author</th>
+                     <td><%= current_user.name.titleize %></td>
+                     <th>Publish At</th>
+                     <td ><%= model.created_at.strftime('%d %b %Y')%></td>
+                  </tr>
+                  <tr>
+                     <th>Description</th>
+                     <td><%= model.description.titleize%></td>
+                     <th>Icon</th>
+                     <td >
+                     <% if model.icon.attached?%>
+                        <%= link_to model.icon.filename.to_s, model.icon_url, target: 'blank' %>
+                     <% else %>
+                        <%= link_to 'No attachment', '#' %>
+                     <% end %>
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
+<%if !['timely_recovery_goal', 'custom_template'].include?(model_name)%>
+   <div class="ledger mb-5">
+      <h5 class="ledger-title">Selection Criterias
+      </h5>
+      <div class="ledger-content p-4 bg-white shadow-sm rounded">
+  <%if model.member_selections.last.link_to_id.blank?%>
+         <div class="row">
+            <table class="table ">
+               <thead>
+                  <th>
+                     By
+                  </th>
+                  <th>
+                     Value
+                  </th>
+               </thead>
+               <tbody>
+                  <% model.member_selections.each do |criteria|%>
+                  <tr>
+                     <th><%= criteria.criteria_type.titleize %></th>
+                     <td>
+                        <%= criteria.criteria_description.titleize %>
+                     </td>
+                  </tr>
+                  <% end %>
+               </tbody>
+            </table>
+         </div>
+  <%else%>
+    <%=render 'shared/member_selection_listing', users: UserActions::CreateService.new(model).members%>
+  <%end%>
+      </div>
+   </div>
+<% end %>
+   <!-- Milestones -->
+   <div class="ledger mb-5">
+      <h5 class="ledger-title">Milestones</h5>
+      <div class="ledger-content p-4 bg-white shadow-sm rounded">
+         <% model.milestones.order('created_at ASC').each_with_index do |milestone, index| %>
+         <div class="milestone-section mb-4">
+            <h6 class="text-dark">Milestone <%= index + 1 %></h6>
+            <table class="table table-borderless table-hover datatable">
+               <thead class="thead-light">
+                  <tr>
+                     <th>No</th>
+                     <th>Name</th>
+                     <th>Action</th>
+                     <th>Interaction</th>
+                     <th>Message</th>
+                     <th>Artifact</th>
+                     <th>Author</th>
+                     <th>Updated at</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <% milestone.action_steps.with_relevant_attachment.order('created_at ASC').each_with_index do |action_step, index| %>
+                  <tr>
+                     <td><%= index + 1 %></td>
+                     <td><%= action_step.name %></td>
+                     <td><%= action_step.action %></td>
+                     <td><%= action_step.interaction %></td>
+                     <td><%= action_step.message %></td>
+                     <td>
+                        <%= link_to truncate(action_step.artifact_description_arr[0], length: 20), url_for(action_step.artifact_description_arr[1].to_s), target: "_blank" %>
+                     </td>
+                     <td><%= current_user.name.titleize %></td>
+                     <td><%= action_step.updated_at.strftime('%d %b %Y') %></td>
+                  </tr>
+                  <% end %>
+               </tbody>
+            </table>
+         </div>
+         <% end %>
+      </div>
+   </div>
+   <!-- Action Buttons -->
+   <% if model.status == "Draft" && model_name != 'timely_recovery_goal' %>
+   <div class="row mb-4">
+      <div class="col text-right">
+         <%= link_to raw("<i class='fa fa-chevron-left'></i> Back"), send("edit_#{model_name}_path", model), class: "btn btn-outline-secondary btn-lg" %>
+         <% disable_launch = !model.can_launch? %>
+         <%= link_to "Launch", send("launch_#{model_name}_path", model), class: "btn btn-outline-primary btn-lg #{disable_launch ? 'disabled' : ''}" %>
+         <% if disable_launch %>
+         <div class="text-muted mt-2">
+            Note: You can launch your <%= model_name.titleize %> by <strong><%= (model.start_date - 1.day).strftime('%d %b %Y') %></strong>.
+         </div>
+         <% end %>
+      </div>
+   </div>
+   <% end %>
+</div>
+
+
+<script>
+  $(function() {
+     $('.datatable').DataTable({
+        "ordering": false,  // Disable sorting
+        "searching": false, // Disable searching
+        "paging": false,    // Disable pagination
+        "info": false    
+      });
+  });
+</script>

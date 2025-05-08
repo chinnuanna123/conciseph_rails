@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  goal: one
+  step_number: MyString
+  name: 1
+  interaction: 1
+  artifact_type: 1
+  artifact_text: MyText
+  artifact_url: MyText
+
+two:
+  goal: two
+  step_number: MyString
+  name: 1
+  interaction: 1
+  artifact_type: 1
+  artifact_text: MyText
+  artifact_url: MyText

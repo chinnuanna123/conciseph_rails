@@ -1,0 +1,157 @@
+<style>
+.min-heigh-115{
+  min-height: 115px;
+}
+.chart-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+</style>
+<div class="content-wrapper">
+ <div class="content-header">
+   <div class="container-fluid">
+     <div class="row mb-2">
+       <div class="col-sm-6">
+         <h1 class="m-0 text-dark">Enrolled Members</h1>
+       </div><!-- /.col -->
+       <div class="col-sm-6">
+         <ol class="breadcrumb float-sm-right">
+           <li class="breadcrumb-item"><a href="#">Home</a></li>
+           <li class="breadcrumb-item active">Enrolled Members</li>
+         </ol>
+       </div>
+     </div>
+   </div>
+ </div>
+<section class="content">
+<% chart_list1 =[{
+    header_id: "enrollment-legend-container",
+    canvas_id: "enrollment",
+    chart_name: "Enrollment"
+}, {
+    header_id: "preferred-language-legend-container",
+    canvas_id: "preferred-language",
+    chart_name: "Preferred Language"
+}, {
+    header_id: "cultural-preferrences-legend-container",
+    canvas_id: "cultural-preferrences",
+    chart_name: "Cultural Preferences"
+}
+]%>
+<% chart_list2 =[ {
+    header_id: "age-group-legend-container",
+    canvas_id: "age-group",
+    chart_name: "Age Group"
+},
+{
+    header_id: "support-needs-legend-container",
+    canvas_id: "support-needs",
+    chart_name: "Support Needs"
+}
+]%>
+
+    <div class="container-fluid">
+     <div class="row chart-container">
+        <%chart_list1.each_with_index do |chart_data, index|%>
+          
+          <div class="card text-center col-md-3 col-lg-3 col-sm-12 mt-1">
+              <div class="card-header min-heigh-115" id="<%=chart_data[:header_id]%>">
+              </div>
+              <div class="card-body position-relative">
+                <canvas id="<%=chart_data[:canvas_id]%>" class="chart-canvas"></canvas>
+              </div>
+              <div class="card-footer ">
+                <b><%= chart_data[:chart_name] %></b>
+              </div>
+          </div>
+        <% end %>
+      </div>
+     <div class="row chart-container">
+        <%chart_list2.each_with_index do |chart_data, index|%>
+          
+          <div class="card text-center col-md-3 col-lg-3 col-sm-12 mt-1">
+              <div class="card-header min-heigh-115" id="<%=chart_data[:header_id]%>">
+              </div>
+              <div class="card-body position-relative">
+                <canvas id="<%=chart_data[:canvas_id]%>" class="chart-canvas"></canvas>
+              </div>
+              <div class="card-footer ">
+                <b><%= chart_data[:chart_name] %></b>
+              </div>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="row">
+          <div class="card">
+              <div class="card-header">
+                    <div class="col-md-8 offset-md-2">
+                      <%= form_tag(users_url, method: "get",format: :js, :remote=>true, :html => {:'data-type' => 'js'}) do  %>
+                          <div class="input-group">
+                              <input type="search" class="form-control form-control-lg" placeholder="Type your keywords here" name="search" value="<%= params[:search].presence || ''%>">
+                              <div class="input-group-append">
+                              <button type="submit" class="btn btn-lg btn-default">
+                              <i class="fa fa-search"></i>
+                              </button>
+                              </div>
+                          </div>
+                      <% end %>
+                  </div>
+              </div>
+              <div class="card-body p-0">
+                  <div id="users-listing" class="row">
+                  
+              </div>
+          </div>
+      </div>
+    </div>
+</section>
+
+<script>  
+  $(function(){
+    $("#users-listing").html('<%= escape_javascript(render partial: "/users/listing") %>')
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/assets/chart_common.js"></script>
+
+<script>
+  $(function(){
+    var data = JSON.parse('<%= @data.to_json.html_safe %>')
+    const chartList = [
+      {
+        canvasId: 'enrollment',
+        keyToAccessData: 'enrollment',
+        backgroundColors: ['rgb(105,168,79)', 'rgb(183,183,183)']
+      },
+      {
+        canvasId: 'preferred-language',
+        keyToAccessData: 'preferred_language',
+        backgroundColors: ['rgb(66,133,244)','rgb(234,67,53)','rgb(183,183,183)']
+      },
+      {
+        canvasId: 'cultural-preferrences',
+        keyToAccessData: 'cultural_preferrences',
+        backgroundColors: ['rgb(251,188,4)','rgb(12 237 102)','rgb(234,67,53)','rgb(120,163,183)','rgb(66,133,244)','rgb(52,168,83)','rgb(183,183,183)']
+      },
+      {
+        canvasId: 'age-group',
+        keyToAccessData: 'age_group',
+        backgroundColors: ['rgb(66,133,244)','rgb(73,166,98)','rgb(251,188,4)','rgb(183,183,183)']
+      },
+      {
+        canvasId: 'support-needs',
+        keyToAccessData: 'support_needs',
+        backgroundColors: ['rgb(183,183,183)','rgb(66,133,244)','rgb(73,166,98)','rgb(251,188,4)', 'rgb(255,99,132)']
+      }
+    ]
+    chartList.map(function(record, index, arr) {
+      console.log(data[record.keyToAccessData])
+      createChart(record.canvasId, 'doughnut', data[record.keyToAccessData]['labels'], data[record.keyToAccessData]['data'], record.backgroundColors)
+    })
+  })
+ 
+</script>
+

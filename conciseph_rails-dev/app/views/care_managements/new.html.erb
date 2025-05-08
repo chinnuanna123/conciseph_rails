@@ -1,0 +1,10 @@
+<div id="new-goal-form">
+   <%= render 'shared/form' , goal: @care_management,disabled: false %>
+</div>
+
+<script>
+$(function () {
+      $(" .artifact-select").trigger('change')
+      $(".criteria-val:not(.hide) .form-control").trigger('change')
+    })
+</script>

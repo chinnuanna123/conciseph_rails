@@ -1,0 +1,140 @@
+user graph
+    graph fixes and clickable
+    graph labels - titleize 
+    graph pertage round
+
+    table 
+        - filter on Gender
+        - Cultural
+        - Preffered language
+
+
+member otp verified
+
+
+Add Completion step 
+Add Step
+
+Template too
+
+
+
+Custom template
+
+support needs
+
+=----------
+--> NO data 
+->> members charts (100%)
+    - members list (same as users list) on hold()
+    chart motha kara
+    
+--> User Screen /users--> replace total users (enrolled and not enrolled counter not showing properly) 
+    - alignment fixes of graph
+--> Chonic condition 
+    Move support need graph users index
+    - Gargabe values are showing
+-->
+
+
+show labels on chart of users
+----------
+
+Action Name	
+Message
+Artifact
+    url
+Action Status
+Last Action Taken On
+
+
+------
+Merge Nil data into NA
+
+Timely edit
+
+------------------------------
+
+medication
+
+start_date
+end_date
+uuid
+
+
+=================
+member engamemet link is not working
+
+goal review page
+ name and description is missing
+ remove id
+
+Possible member counter
+
+
+Goal show page  
+    Acknowledge by
+    Last action taken
+
+    member show on goal 
+        show action name instead of message
+
+
+Labels
+    to be corrected
+
+PDF is not showing (MObile)
+Goal after completion gets removed but not announcemet
+
+
+User created after launching the goal (user action must be created)
+
+Announcemt coming in 2 places
+
+===============================
+
+
+Action
+play video document type video
+display flyer document type document
+Launch external web url document type web url
+
+
+
+Goals
+added web url
+
+update video url web url does not clear
+
+
+Ability changes
+
+
+{
+    user_id:
+    actionable_type: 'action_plan/announcemet',
+    section: "Better Health"
+    action step id: 
+    user_action_id:
+}
+===========
+
+Member Selection
+Dynamic multiple
+
+
+Action Name	
+textfield
+
+
+
+ssh root@45.79.225.70
+Conciseph@4321
+
+postgresql
+conciseph3984@
+
+conciseph
+
+
+alias compile_rails="bundle install;export RAILS_ENV=production;rake db:migrate;rake assets:precompile;chmod -R 0777 tmp/;service nginx restart;"

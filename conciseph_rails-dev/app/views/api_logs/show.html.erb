@@ -1,0 +1,44 @@
+<div class="content-wrapper">
+    <%=render 'shared/campaigns/header'%>
+    <section class="content">
+       <div class="card">
+          <div class="card-body">
+             <div class="row">
+                <div class="col-12 col-md-12 col-lg-12">
+                <%api_log = @api_log%>
+                   <h3 class="text-primary"><i class="fas fa-paint-brush"></i> <%=api_log.id%></h3>
+                   <br/>
+                   <div class="row">
+                      <div class="col-6 text-muted text-sm mt-5">
+                         URL
+                         <b class="d-block text-danger"><%=api_log.url%></b>
+                      </div>
+                      <div class="col-6 text-muted text-sm  mt-5">
+                         Payload
+                         <b class="d-block text-danger"><%=api_log.payload%></b>
+                      </div>
+                      <div class="col-6 text-muted text-sm  mt-5">
+                         Response Code
+                         <b class="d-block text-danger"><%=api_log.response_code%></b>
+                      </div>
+                      <div class="col-6 text-muted text-sm  mt-5">
+                         Response Body
+                         <b class="d-block text-danger"><%=api_log.response_body%></b>
+                      </div>
+                      <div class="col-6 text-muted text-sm  mt-5">
+                         Request IP
+                         <b class="d-block text-danger"><%=api_log.request_ip%></b>
+                      </div>
+                      <div class="col-6 text-muted text-sm  mt-5">
+                         Created At
+                         <b class="d-block text-danger"><%=format_date_time(api_log.created_at)%></b>
+                      </div>
+                      
+                   </div>
+                </div>
+                
+             </div>
+          </div>
+       </div>
+    </section>
+</div>

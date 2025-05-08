@@ -1,0 +1,40 @@
+<%if user_actions.present?%>
+<%=render partial: "/shared/pagination", locals: {objekt: user_actions}%>
+<%end%>
+<table class="table table-striped">
+    <thead>
+        <tr>
+        <th>Member Name</th>
+        <th><%=heading%></th>
+        <th>Status</th>
+        <th>Start Date</th>
+        <th>Completed Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <%if user_actions.present?%>
+          <% user_actions.each do |user_action|%>
+              <%actionable = user_action.actionable%>
+              <%actionable_type = user_action.actionable_type%>
+              <%user = user_action.user%>
+              <%steps = user_action.user_action_steps%>
+              <tr>
+                  <td><%= user.name%></td>
+                  <%if heading == 'Medication'%>
+                    <td><%="Medication_#{user_action.medication.id}"%></td>
+                  <%else%>
+                    <td><%=link_to "#{actionable.name.titleize}", send("#{actionable_type.titleize.downcase.gsub(" ", "_")}_path", actionable.id) %></td>
+                  <%end%>
+                  <td><%= user_action.status%></td>
+                  <td><%= steps&.first&.status_Completed? ? steps&.first.created_at&.strftime('%Y-%m-%d %I:%M%p') : '-'%></td>
+                  <td><%= user_action.status_Completed? ? user_action.completion_date&.strftime('%Y-%m-%d %I:%M%p') : '-'%></td>
+              </tr>
+          <% end %>
+        <%else%>
+              <tr><td colspan=12 class="text-center">No data </td></tr>
+        <%end%>
+    </tbody>
+</table>
+<%if user_actions.present?%>
+<%=render partial: "/shared/pagination", locals: {objekt: user_actions}%>
+<%end%>

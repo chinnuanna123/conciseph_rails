@@ -1,0 +1,16 @@
+<%= render partial: "/shared/pagination", locals: {objekt: @api_logs}%>
+ <% @api_logs.each do |api_log| %>
+    <tr>
+      <td><%= api_log.url %></td>
+      <td><%= truncate(api_log.payload.to_s, length: 20) %></td>
+      <td><%= api_log.response_code %></td>
+      <td><%= truncate(api_log.response_body.to_s, length: 20) %></td>
+      <td><%= api_log.request_ip %></td>
+      <td><%= format_date_time(api_log.created_at) %></td>
+      <td>
+        <%= link_to "/overseers/#{api_log.overseer.id}/api_logs/#{api_log.id}" do %>
+          Show
+        <%end%>
+      </td>
+    </tr>
+  <% end %>

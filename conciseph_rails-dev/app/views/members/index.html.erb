@@ -1,0 +1,131 @@
+<style>
+.chart-canvas {
+    width: 100px; 
+    height: 100px; 
+    margin-bottom: 20px; 
+    display: block; 
+}
+</style>
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <% flash.each do |key, value| %>
+            <div class="alert alert-<%= key %>">
+                <%= value %>
+            </div>
+            <% end %>
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Members</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">members</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row ">
+
+                <div class="card text-center col-md-3 col-lg-3 col-sm-12 ">
+                    <div style="width: 100%" class="d-flex justify-content-center align-items-center">
+                        <canvas id="enagagements" class=""></canvas>
+                    </div>
+                    <div class="">
+                        <b>Member Enagagements</b>
+                    </div>
+                    
+                </div>
+                <div class="col-md-9 col-lg-9 col-sm-12">
+                    <div class="row">
+                        <div class="col-lg-6 col-6">
+                            <a href="<%= members_path%>" style="color: white">
+                            <div class="small-box bg-warning">
+                            <div class="inner">
+                                <h3><%= @total_members%></h3>
+                                <p>Total Members </p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-person-add"></i>
+                            </div>
+                            </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-6 col-6">
+                            <a href="<%= users_path %>" style="color: white">
+                            <div class="small-box bg-success">
+                            <div class="inner">
+                                <h3><%= @total_users %> </h3>
+                                <p>Members Enrolled</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-person-add"></i>
+                            </div>
+                            </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="card">
+                    <div class="card-header pl-0 pr-0">
+                        <div class="row ">
+                            <div class="col-md-8 ">
+                                <%= form_tag(members_url, method: "get" ,format: :js, :remote=>true, :html=>{:'data-type' =>'js'}) do %>                                    
+                                    <div class="input-group">
+                                        <input type="search" class="form-control form-control-lg"
+                                            placeholder="Type your keywords here" name="search"
+                                            value="<%= params[:search].presence || ''%>">
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-lg btn-default">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                <% end %>
+                            </div>
+                            <div class="col-md-2 offset-md-2">
+                            <%=link_to "Bulk Import" , new_members_import_path, class: "btn btn-lg btn-primary"  %> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="row">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Member Name</th>
+                                        <th>Status</th>
+                                        <th>Phone No</th>
+                                        <th>Email ID</th>
+                                        <th>Data Source</th>
+                                        <th>Last Updated By</th>
+                                        <th>Last Updated At</th>
+                                    </tr>
+                                </thead>
+                                <tbody id= 'members_listing'>
+                                    <%=render 'listing', members: @members%>
+                                </tbody>
+                            </table>
+                            <%= render partial: "/shared/pagination" , locals: {objekt: @members}%>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/assets/chart_common.js"></script>
+
+<script>
+$(function(){
+  createChart('enagagements', 'doughnut', ['Members Enrolled'], [<%= @total_users %>], ['rgb(105,168,79)'], 100, 100)
+});
+</script>    

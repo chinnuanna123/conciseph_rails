@@ -1,0 +1,34 @@
+<style>
+.height-150{
+  height: 150px;
+}
+</style>
+<div class="content-wrapper">
+ <div class="content-header">
+   <div class="container-fluid">
+     <div class="row mb-2">
+       <div class="col-sm-6">
+         <h1 class="m-0 text-dark">Dashboard</h1>
+       </div><!-- /.col -->
+       <div class="col-sm-6">
+         <ol class="breadcrumb float-sm-right">
+           <li class="breadcrumb-item"><a href="<%= root_path%>">Home</a></li>
+           <li class="breadcrumb-item active">Dashboard</li>
+         </ol>
+       </div>
+     </div>
+   </div>
+ </div>
+
+ <section class="content">
+   <div class="container-fluid">
+   <div class="row">
+      <%@data.each do |record|%>
+        <% color =cycle(['round-info', 'round-dark','round-warning', 'round-danger','round-success','round-primary',  'round-secondary'])%>
+        <%= render :partial=>'/shared/tile_card', locals:{ color: color, icon: ICONS_HASH[record[:title]], show_counter: record[:show_counter], count: record[:count], title: record[:title], link: record[:link]} %>
+      <% end %>
+    </div>
+
+  </div>
+ </section>
+</div>

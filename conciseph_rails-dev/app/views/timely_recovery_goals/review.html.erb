@@ -1,0 +1,5 @@
+<%=render 'shared/review', model: @timely_recovery_goal%>
+<%=link_to raw("<i class='fa fa-chevron-left'></i> Back") , edit_timely_recovery_goal_path(@timely_recovery_goal) , class: "btn btn-secondary"%>
+<%if @timely_recovery_goal.can_launch?%>
+<%=link_to "Launch" ,  launch_timely_recovery_goal_path(@timely_recovery_goal) , class: "launch-link btn btn-primary "%> 
+<%end%>

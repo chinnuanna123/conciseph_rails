@@ -1,0 +1,10 @@
+
+<%model_name = model.to_s.titleize.downcase.gsub(' ', '_')%>
+<% CustomTemplate.functional_areas.each_with_index do |(key, value), index|%>
+  <% color = cycle(['round-info', 'round-dark','round-warning', 'round-danger','round-success','round-primary',  'round-secondary'])%>
+  <%= render :partial=>'/shared/tile_card', locals:{ color: color, icon: ICONS_HASH[key.titleize], show_counter: true, count: @records_with_categories[key].presence || 0, title: key.titleize, link: custom_templates_path(functional_area: key) }%>
+<% end %>
+
+<% create_text = CREATE_NEW_TILE_NAMES[params[:controller].to_sym]%>
+<%= render :partial=>'/shared/tile_card', locals:{ color: 'round-info', icon: ICONS_HASH[create_text], show_counter: false, count: 0, title: create_text + "\n", link: send("new_#{model_name}_path") }%>
+

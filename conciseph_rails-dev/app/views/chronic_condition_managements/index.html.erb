@@ -1,0 +1,154 @@
+<style>
+.chart-canvas {
+    width: 300px; 
+    height: 300px; 
+    margin-bottom: 20px; 
+    display: block; 
+}
+.hidden-link{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+.position-relative{
+  position: relative;
+}
+</style>
+<% chart_list =[{
+    link_url: medication_refills_chronic_condition_managements_path,
+    header_id: "medication-refill-adherence-legend-container",
+    canvas_id: "medication-refill-adherence",
+    chart_name: "Medication Refill Request"
+}, {
+    link_url: medication_adherence_chronic_condition_managements_path,
+    header_id: "medication-adherence-legend-container",
+    canvas_id: "medication-adherence",
+    chart_name: "Medication Adherence"
+}, {
+    link_url: nutrition_therapy_chronic_condition_managements_path,
+    header_id: "nutrition-therapy-completeness-legend-container",
+    canvas_id: "nutrition-therapy-completeness",
+    chart_name: "Nutrition Therapy Completeness"
+}, {
+    link_url: health_education_chronic_condition_managements_path,
+    header_id: "health-education-completeness-legend-container",
+    canvas_id: "health-education-completeness",
+    chart_name: "Health Education Completeness"
+}, {
+    link_url: health_events_chronic_condition_managements_path,
+    header_id: "health-event-participation-legend-container",
+    canvas_id: "health-event-participation",
+    chart_name: "Health Event Participation"
+}, {
+    link_url: feedbacks_chronic_condition_managements_path,
+    header_id: "feedback-completeness-legend-container",
+    canvas_id: "feedback-completeness",
+    chart_name: "Feedback/Surveys Completeness"
+}, {
+    link_url: hb1ac_chronic_condition_managements_path,
+    header_id: "Hb1ac-legend-container",
+    canvas_id: "Hb1ac",
+    chart_name: "Reported Hb1AC"
+}, {
+    link_url: schedule_adherence_chronic_condition_managements_path,
+    header_id: "schedule-adherence-legend-container",
+    canvas_id: "schedule-adherence",
+    chart_name: "Medication Non Adherence Members"
+}]%>
+<div class="content-wrapper">
+ <div class="content-header">
+   <div class="container-fluid">
+     <div class="row mb-2">
+       <div class="col-sm-6">
+         <h1 class="m-0 text-dark">Chronic Condition Dashboard</h1>
+       </div><!-- /.col -->
+       <div class="col-sm-6">
+         <ol class="breadcrumb float-sm-right">
+           <li class="breadcrumb-item"><a href="#">Home</a></li>
+           <li class="breadcrumb-item active">Chronic Condition Dashboard</li>
+         </ol>
+       </div>
+     </div>
+   </div>
+ </div>
+<section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <%chart_list.each do |chart_data|%>
+          <div class="card text-center col-md-4 col-lg-4 col-sm-12 mt-1">
+              <div class="card-header" id="<%=chart_data[:header_id]%>">
+              </div>
+              <div class="card-body position-relative">
+                <canvas id="<%=chart_data[:canvas_id]%>" class="chart-canvas"></canvas>
+                <%= link_to "", chart_data[:link_url],  class: 'hidden-link' %>
+              </div>
+              <div class="card-footer">
+                <b><%= chart_data[:chart_name] %></b>
+              </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+</section>
+<div id="user-data" data-user="<%= @labels.to_json %>"></div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/assets/chart_common.js"></script>
+
+<script>
+$(function(){
+  var data = JSON.parse('<%= @data.to_json.html_safe %>')
+
+  const chartList = [
+    {
+      canvasId: 'medication-refill-adherence',
+      keyToAccessData: 'medication_refill_adherence',
+      backgroundColors: ['rgb(105,168,79)', 'rgb(183,183,183)']
+    },
+    {
+      canvasId: 'medication-adherence',
+      keyToAccessData: 'medication_adherence',
+      backgroundColors: ['rgb(255,99,132)', 'rgb(54, 162, 235)']
+    },
+    {
+      canvasId: 'nutrition-therapy-completeness',
+      keyToAccessData: 'nutrition_therapy_completeness_data',
+      backgroundColors: ['rgb(255, 205, 86)', 'rgb(75, 192, 192)']
+    },
+    {
+      canvasId: 'health-education-completeness',
+      keyToAccessData: 'health_education_data',
+      backgroundColors: ['rgb(153, 102, 255)', 'rgb(255, 159, 64)']
+    },
+    {
+      canvasId: 'health-event-participation',
+      keyToAccessData: 'health_event_data',
+      backgroundColors: ['rgb(255, 99, 132)', 'rgb(75, 192, 192)']
+    },
+    {
+      canvasId: 'feedback-completeness',
+      keyToAccessData: 'member_feedback_data',
+      backgroundColors: ['rgb(255, 159, 64)', 'rgb(153, 102, 255)']
+    },
+    {
+      canvasId: 'Hb1ac',
+      keyToAccessData: 'hbac',
+      backgroundColors: ['rgb(255, 159, 64)', 'rgb(203, 195, 227)', 'rgb(205, 133, 63)']
+    },
+    {
+      canvasId: 'schedule-adherence',
+      keyToAccessData: 'schedule_adherence',
+      backgroundColors: ['rgb(255, 159, 64)', 'rgb(203, 195, 227)', 'rgb(205, 133, 63)']
+    },
+
+  ]
+
+  chartList.map(function(record, index, arr) {
+    createChart(record.canvasId, 'doughnut', Object.keys(data[record.keyToAccessData]), Object.values(data[record.keyToAccessData]), record.backgroundColors)
+  })
+
+  // createChart('support-needs', 'doughnut', Object.keys(data['support_needs']), Object.values(data['support_needs']), ['rgb(255, 159, 64)', 'rgb(203, 195, 227)', 'rgb(205, 133, 63)']);
+});
+</script>

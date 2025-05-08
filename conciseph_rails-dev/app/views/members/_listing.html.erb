@@ -1,0 +1,36 @@
+<%if @members.present?%>
+    <% @members.each do |member|%>
+        <tr>
+            <td>
+                <%= member.name.titleize%>
+            </td>
+            <td>
+                <% user_exist = User.where(email: member.email).present? || User.where(phone: member.phone).present?%>
+                <%= user_exist ? 'Enrolled' : 'Non Enrolled'%>
+            </td>
+            <td>
+                <%= member.phone%>
+            </td>
+            <td>
+                <%= member.email%>
+            </td>
+            <td>
+                CSV Upload
+            </td>
+            
+            <td>
+                <%= current_user.name%>
+            </td>
+            <td>
+                <%= member.updated_at%>
+            </td>
+            
+        </tr>
+    <% end %>
+<%else%>
+    <tr>
+        <td colspan="12" class="text-center pt-3 pb-3">
+            No members found
+        </td>
+    </tr>
+<%end%>

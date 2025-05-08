@@ -1,0 +1,67 @@
+<h3 class="text-muted ml-2 mt-2">Selected Members</h3>
+<hr>
+
+<table class="table table-striped table-valign-middle" id= "my-table">
+    <thead>
+      <tr>
+          <th>Member Name</th>
+          <th>Phone no.</th>
+          <th>Email ID</th>
+          <th>Gender</th>
+          <th>Preferred Language</th>
+          <th>Zip Code</th>
+          <th>Last Intervention DateTime</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%if users.present?%>
+        <%users.each do |user|%>
+        <tr>
+          <td>
+              <%=(user.name||"no name") %> 
+          </td>
+          <td>
+              <%=blank_if_na(user&.phone)%>
+          </td>
+          <td>
+              <%=user&.email%>
+          </td>
+          <td>                                                              
+              <%=blank_if_na(user.gender)%>                        
+          </td>
+          <td>                                                              
+              <%=blank_if_na(user.preferred_language)%>                  
+          </td>
+          <td>                                                              
+              <%=blank_if_na(user&.zip_code)%>                  
+          </td>
+          <td>                                                              
+              <%=user&.last_seen_at&.strftime("%Y-%m-%d %H:%M:%S")%>                  
+          </td>
+        </tr>
+        <%end%> 
+    <%else %>
+      <tr>
+        <td colspan="4"class="text-center "><strong>No  User  Found</strong></td>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+      </tr>
+    <%end%>                  
+    </tbody>
+        <%#= render partial: "/shared/pagination", locals: {objekt: users}%>
+</table>
+
+
+<script>
+  $(function () {
+      $('#my-table').DataTable(
+        {
+          "searching": false, // Disable searching
+          "paging": false,    // Disable pagination
+          "info": false,
+        }
+      )
+  })
+</script>

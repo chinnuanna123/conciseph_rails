@@ -1,0 +1,56 @@
+<%model_name = controller_name.singularize%>
+<% models.each do |model| %>
+<tr>
+   <td>               
+      <a href="<%=send("#{model_name}_path", model)%>">
+      <%=model.respond_to?(:start_date) ? (model.start_date.present? ? (model&.start_date&.strftime('%B%Y-')+ model.name) : "-") : model.name%>
+      </a>
+   </td>
+   <td>
+      <%=model.send("#{controller_name.singularize}_category")%>
+   </td>
+   <td>
+      <%user_actions = model.user_actions%>
+      <%= @user_actions_count[model.id] || 0 %>
+   </td>
+   <td>
+      <%= user_actions.select{|ug| ug.status == 'Not Started' }.count%>
+   </td>
+   <td>
+      <%= user_actions.select{|ug| ug.status == 'In Progress' }.count%>
+   </td>
+   <td>
+      <%=user_actions.select{|ug| ug.status == 'Completed' }.count%>
+   </td>
+   <%unless model_name == 'timely_recovery_goal'%>
+   <td>
+      <%= model.start_date&.strftime('%d %b %Y') %>
+   </td>
+   <td>
+      <%= model.end_date&.strftime('%d %b %Y') %>
+   </td>
+   <%end%>
+   <td>
+      <%= model.status%>
+   </td>
+   <td>
+      <%= model.created_at.strftime('%d %b %Y')%>
+   </td>
+   <td>
+      <%= model.owner&.name.presence || current_user.name %>
+   </td>
+   <td>    
+      <%if model.status == 'Draft' %>       
+      <a href="<%=send("edit_#{model_name}_path", model)%>" ><i class="fas fa-edit pl-2 pr-2"></i></a>
+      <a href="<%=send("#{model_name}_path", model ,authenticity_token: form_authenticity_token)%>" data-confirm='Are you sure?' data-method='delete'><i class="fa fa-trash"></i></a>
+      <%elsif (model.status == 'Active' || model.status == 'Completed')%>
+      <a href="<%=send("new_#{model_name}_path", goal_id: model.id)%>" ><i class="fas fa-copy pl-2 pr-2"></i></a>
+      <%if model_name == 'timely_recovery_goal'%>
+      <a href="<%=send("edit_#{model_name}_path", model)%>" ><i class="fas fa-edit pl-2 pr-2"></i></a>
+      <a href="<%=send("#{model_name}_path", model ,authenticity_token: form_authenticity_token)%>" data-confirm='Are you sure?' data-method='delete'><i class="fa fa-trash"></i></a>
+      <%end%>
+      <% end %>
+   </td>
+</tr>
+<% end %>
+<%= render partial: "/shared/pagination", locals: {objekt: instance_variable_get("@#{model_name.pluralize}") }%>

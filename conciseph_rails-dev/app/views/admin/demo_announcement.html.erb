@@ -1,0 +1,1606 @@
+<style>
+    .hide{
+        display: none !important;
+    }
+    table tbody tr td{
+        padding-left: 5px !important;
+        padding-right: 5px !important;
+    }
+    table tbody tr .form-control{
+        padding: 0 5px !important;
+    }
+
+
+   .ribbon {
+  position: relative;
+  background: #0070BB;
+  color: white;
+  display: block;
+  width: 90%;
+  margin: 0 auto;
+  font-family: Source Sans Pro;
+  text-align: center;
+  z-index: 3;
+}
+
+.ribbon:before {
+  position: absolute;
+  /* content: ""; */
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 12px 12px 0;
+  border-color: transparent #005999 transparent transparent;
+  left: -1px;
+  bottom: -12px;
+  z-index: 1;
+}
+
+.ribbon:after {
+  position: absolute;
+  /* content: ""; */
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 12px 12px 0 0;
+  border-color: #005999 transparent transparent transparent;
+  right: -1px;
+  bottom: -12px;
+  z-index: 1;
+}
+
+.ribbon .left-fold {
+  
+
+   background-image: linear-gradient(-90deg,#005188, #0061a2);
+   position: absolute;
+   height: 25px;
+
+   width: 0px;
+   left: 0px;
+   bottom: 0px;
+   display: block;
+   margin: 0;
+   border-right: 1px solid #005188;
+}
+
+.ribbon .left-fold:before {
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 15px 25px 0;
+  border-color: transparent #005999 transparent transparent;
+  left: -15px;
+  top: 0;
+}
+
+.ribbon .left-fold:after {
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 0 25px 15px;
+  border-color: transparent transparent #005999 transparent;
+  left: -15px;
+  bottom: 0;
+}
+
+.ribbon h3 {
+  z-index: 2;
+  position: relative;
+  background: #0070BB;
+  width: 100%;
+  display: block;
+  font-size: 15px;
+  line-height: 1.3em;
+  padding: 5px 0;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.ribbon .right-fold {
+   position: absolute;
+   height: 25px;
+
+    width: 25px;
+    right: 0px;
+    bottom: 0px;
+    display: block;
+    margin: 0;
+    border-left: 1px solid #006699;
+}
+
+.ribbon .right-fold:before {
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 25px 15px 0 0;
+  border-color: #005999 transparent transparent transparent;
+  right: -15px;
+  top: 0;
+}
+
+.ribbon .right-fold:after {
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 25px 0 0 15px;
+  border-color: transparent transparent transparent #005999;
+  right: -15px;
+  bottom: 0;
+}
+</style>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+  
+<div class="content-wrapper">
+   <div class="content-header">
+      <div class="container-fluid">
+         <div class="row mb-2">
+            <div class="col-sm-6">
+               <h1 class="m-0 text-dark">New Announcement Goal</h1>
+            </div>
+            <!-- /.col -->
+            <div class="col-sm-6">
+               <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item"><a href="<%= root_path%>">Home</a></li>
+                  <li class="breadcrumb-item active">New Announcement Goal</li>
+               </ol>
+            </div>
+         </div>
+      </div>
+   </div>
+   <section class="content">
+      <div class="row">
+         <div class="col-md-12">
+            <div class="card card-default">
+               <div class="card-body">
+                  <div class="row">
+                     <div class="col-md-12">
+                        <div class="bs-stepper">
+                           <div class="bs-stepper-header" role="tablist">
+                              <!-- your steps here -->
+                              <div class="step active" data-target="#logins-part">
+                                 <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger">
+                                 <span class="bs-stepper-circle">1</span>
+                                 <span class="bs-stepper-label">Define</span>
+                                 </button>
+                              </div>
+                              <div class="line"></div>
+                              <div class="step " data-target="#review-part">
+                                 <button type="button" class="step-trigger" role="tab" aria-controls="review-part" id="review-part-trigger">
+                                 <span class="bs-stepper-circle">2</span>
+                                 <span class="bs-stepper-label">Review</span>
+                                 </button>
+                              </div>
+                              <div class="line"></div>
+                              <div class="step " data-target="#launch-part">
+                                 <button type="button" class="step-trigger" role="tab" aria-controls="launch-part" id="launch-part-trigger">
+                                 <span class="bs-stepper-circle">3</span>
+                                 <span class="bs-stepper-label">Launch</span>
+                                 </button>
+                              </div>
+                           </div>
+                           <div class="bs-stepper-content">
+                              <!-- your steps content here -->
+                              <div id="logins-part" class="content active dstepper-block " role="tabpanel" aria-labelledby="logins-part-trigger">
+                                 <form>
+                                    <div class="row">
+                                       <h3>Goal</h3>
+                                       <hr>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-sm-4">
+                                          <div class="form-group">
+                                             <label>Name</label>
+                                             <input type="text" class="form-control" placeholder="Enter Name">
+                                          </div>
+                                       </div>
+
+                                       <div class="col-sm-4">
+                                          <div class="form-group">
+                                             <label>Type</label>
+                                             <select class="form-control type-dropdown" >
+                                                <option value=''></option>
+                                                <option value='quality_measures'>Quality Measures</option>
+                                                <option value='announcement'>Announcement</option>
+                                                <option value='education'>Education</option>
+                                                <option value='health_event'>Health Event</option>
+                                                <option value='survey_feedback'>Survey / Feedback</option>
+                                             </select>
+                                          </div>
+                                       </div>
+
+                                       <div class="col-sm-4">
+                                          <div class="form-group">
+                                             <label>Category</label>
+                                             <select class="form-control category-dropdown" >
+                                                <option value=''></option>
+                                                <option value='Well Child Care'>General</option>
+                                                <option value='ED Follow Ups'>Eligibility & Benefits</option>
+                                                <option value='Counseling'>Care Access</option>
+                                             </select>
+                                          </div>
+                                       </div>
+
+                                       <div class="col-sm-4">
+                                          <div class="form-group">
+                                             <label>Status</label>
+                                             <select class="form-control status-dropdown" >
+                                                <option value=''></option>
+                                                <option value='draft'>Draft</option>
+                                                <option value='active'>Active</option>
+                                                <option value='complete'>Complete</option>
+                                             </select>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-4 hide type" data-type="announcement">
+                                          <div class="form-group">
+                                             <label>Name</label>
+                                             <select class="form-control" data-type="announcement">
+                                                <option value=''></option>
+                                                <option value='Enrollment/Reenrollment'>Enrollment/Reenrollment</option>
+                                                <option value='New Provider / Remove Provider'>New Provider / Remove Provider</option>
+                                                <option value='New / Updates Benefit Coverage'>New / Updates Benefit Coverage</option>
+                                                <option value='New Support Service'>New Support Service</option>
+                                             </select>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-4 hide type" data-type="quality_measures">
+                                          <div class="form-group">
+                                             <label>Name</label>
+                                             <select class="form-control" >
+                                                <option value=''></option>
+                                                <option value='Well Child Visits'>Well Child Visits</option>
+                                                <option value='Breast Cancer Screening'>Breast Cancer Screening</option>
+                                                <option value='Prenatal Pertussis'>Prenatal Pertussis</option>
+                                                <option value='Postpartum Care Visits'>Postpartum Care Visits</option>
+                                                <option value='Postpartum Birth Control'>Postpartum Birth Control</option>
+                                                <option value='All Childhood Vaccines'>All Childhood Vaccines</option>
+                                                <option value='Blood Lead Screening'>Blood Lead Screening</option>
+                                                <option value='Dental Fluoride Vaccine'>Dental Fluoride Vaccine</option>
+                                                <option value='Tobacco Use Screening'>Tobacco Use Screening</option>
+                                                <option value='Screening for Clinical Depression'>Screening for Clinical Depression</option>
+                                                <option value='Screening for Unhealthy Alcohol Use'>Screening for Unhealthy Alcohol Use</option>
+                                                <option value='Developmental Screening'>Developmental Screening</option>
+                                             </select>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-4">
+                                          <div class="form-group">
+                                             <label>Goal Start Date</label>
+                                             <input type="date" class="form-control">
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-4">
+                                          <div class="form-group">
+                                             <label>Goal End Date</label>
+                                             <input type="date" class="form-control">
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <h3>Member Selection</h3>
+                                       <hr>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-sm-6">
+                                          <div class="form-group">
+                                             <label>By</label>
+                                             <select class="form-control by-dropdown" >
+                                                <option value=''></option>
+                                                <option value='age'> Age</option>
+                                                <option value='gender'> Gender</option>
+                                                <option value='ethnicity'> Ethnicity</option>
+                                                <option value='zip_code'> Zip Code</option>
+                                                <option value='specialty'> Specialty</option>
+                                                <option value='annual_month'> Annual Month / Annual Renewal Date</option>
+                                             </select>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-6 hide by" data-type="age">
+                                          <div class="form-group">
+                                             <label>Age</label>
+                                             <select class="form-control ">
+                                                <option value=''></option>
+                                                <option value='0 -15 month'>0 -15 month</option>
+                                                <option value='3rd - 6th years'>3rd - 6th years</option>
+                                                <option value='2 Years'>2 Years</option>
+                                                <option value='9, 18 and 30 months'>9, 18 and 30 months</option>
+                                                <option value='18-21 years'>18-21 years</option>
+                                             </select>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-6 hide by" data-type="gender">
+                                          <div class="form-group">
+                                             <label>Gender</label>
+                                             <select class="form-control" >
+                                                <option value=''></option>
+                                                <option value='male'>Male</option>
+                                                <option value='female'>Female</option>
+                                             </select>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-6 hide by" data-type="ethnicity">
+                                          <div class="form-group">
+                                             <label>Ethnicity</label>
+                                             <select class="form-control">
+                                                <option value=''></option>
+                                                <option value='White'>White</option>
+                                                <option value='Black'>Black</option>
+                                                <option value='Latino'>Latino</option>
+                                                <option value='Asian'>Asian</option>
+                                                <option value='American Indian'>American Indian</option>
+                                                <option value='Pacific Islander'>Pacific Islander</option>
+                                             </select>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-6 hide by" data-type="specialty">
+                                          <div class="form-group">
+                                             <label>Speciality</label>
+                                             <select class="form-control" >
+                                                <option value=''></option>
+                                                <option value='OB GYN'>OB GYN</option>
+                                                <option value='Primary Care'>Primary Care</option>
+                                                <option value='Psychiatric'>Psychiatric</option>
+                                             </select>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-6 hide by" data-type="zip_code">
+                                          <div class="form-group " >
+                                             <label>ZIP Code</label>
+                                             <input type="text" class="form-control" placeholder="Enter ZIP Code">
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <h3>Action Plan</h3>
+                                       <hr>
+                                    </div>
+                                    <div class="row">
+                                       <table class="table datatable">
+                                          <thead>
+                                             <tr>
+                                                <th width="50px">Sr No</th>
+                                                <th width="200px">Owner</th>
+                                                <th width="50px">Dependency</th>
+                                                <th width="200px">Action Name</th>
+                                                <th width="200px">Artifact Category</th>
+                                                <th width="300px">Artifact</th>
+                                                <th width="200px">Condition</th>
+                                                <th width="100px">Status</th>
+                                                <th>Logging</th>
+                                                <th>Updated By</th>
+                                                <th>Updated on</th>
+                                             </tr>
+                                          </thead>
+                                          <tbody>
+                                             <tr>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <input type="text" class="form-control">
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Member'>Member</option>
+                                                         <option value='System'>System</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <input type="text" class="form-control">
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Intro Message'>Intro Message</option>
+                                                         <option value='Well Child Care Info Flyer'> Well Child Care Info Flyer</option>
+                                                         <option value='Schedule an appointment'> Schedule an appointment</option>
+                                                         <option value='Create Calendar Reminder'> Create Calendar Reminder</option>
+                                                         <option value='Member Self Declaration of Completion'> Member Self Declaration of Completion</option>
+                                                         <option value='Thank you note'> Thank you note</option>
+                                                         <option value='Well Child Care Feedback'> Well Child Care Feedback</option>
+
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control artifact-selection">
+                                                         <option value=''></option>
+                                                         <option value='File'>File</option>
+                                                         <option value='Web Url'>WEB URL</option>
+                                                         <option value='Text Message with Ok Cancel Option'>Text Message with Ok Cancel Option</option>
+                                                         <option value='Text Message with Ok Option'>Text Message with Ok Option</option>
+                                                         <option value='Text Message with Accept Decline Option'>Text Message with Accept Decline Option</option>
+                                                         <option value='Text Message with Yes No Option'>Text Message with Yes No Option</option>
+                                                         <option value='Text Message with Agree Disagree Option'>Text Message with Agree Disagree Option</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <textarea class="form-control artifact-textarea"  rows="3"></textarea>
+                                                      <input type="file" class="form-control-file hide"  >
+                                                   </div>
+
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <input type="text" class="form-control">
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Active'>Active</option>
+                                                         <option value='Inactive'>Inactive</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td class="">
+                                                   <div class="form-check form-group d-flex justify-content-center ">
+                                                      <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something" >
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <%= current_user.name%>
+                                                </td>
+                                                <td>
+                                                   <%= DateTime.now%>
+                                                </td>
+                                             </tr>
+                                             <tr>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <input type="text" class="form-control">
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Member'>Member</option>
+                                                         <option value='System'>System</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <input type="text" class="form-control">
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Intro Message'>Intro Message</option>
+                                                         <option value='Well Child Care Info Flyer'> Well Child Care Info Flyer</option>
+                                                         <option value='Schedule an appointment'> Schedule an appointment</option>
+                                                         <option value='Create Calendar Reminder'> Create Calendar Reminder</option>
+                                                         <option value='Member Self Declaration of Completion'> Member Self Declaration of Completion</option>
+                                                         <option value='Thank you note'> Thank you note</option>
+                                                         <option value='Well Child Care Feedback'> Well Child Care Feedback</option>
+
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control artifact-selection">
+                                                         <option value=''></option>
+                                                         <option value='File'>File</option>
+                                                         <option value='Web Url'>WEB URL</option>
+                                                         <option value='Text Message with Ok Cancel Option'>Text Message with Ok Cancel Option</option>
+                                                         <option value='Text Message with Ok Option'>Text Message with Ok Option</option>
+                                                         <option value='Text Message with Accept Decline Option'>Text Message with Accept Decline Option</option>
+                                                         <option value='Text Message with Yes No Option'>Text Message with Yes No Option</option>
+                                                         <option value='Text Message with Agree Disagree Option'>Text Message with Agree Disagree Option</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                       <textarea class="form-control artifact-textarea"  rows="3"></textarea>
+                                                      <input type="file" class="form-control-file hide"  >
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <input type="text" class="form-control">
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Active'>Active</option>
+                                                         <option value='Inactive'>Inactive</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td class="">
+                                                   <div class="form-check form-group d-flex justify-content-center ">
+                                                      <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something" >
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <%= current_user.name%>
+                                                </td>
+                                                <td>
+                                                   <%= DateTime.now%>
+                                                </td>
+                                             </tr>
+                                             <tr>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <input type="text" class="form-control">
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Member'>Member</option>
+                                                         <option value='System'>System</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <input type="text" class="form-control">
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Intro Message'>Intro Message</option>
+                                                         <option value='Well Child Care Info Flyer'> Well Child Care Info Flyer</option>
+                                                         <option value='Schedule an appointment'> Schedule an appointment</option>
+                                                         <option value='Create Calendar Reminder'> Create Calendar Reminder</option>
+                                                         <option value='Member Self Declaration of Completion'> Member Self Declaration of Completion</option>
+                                                         <option value='Thank you note'> Thank you note</option>
+                                                         <option value='Well Child Care Feedback'> Well Child Care Feedback</option>
+
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control artifact-selection">
+                                                         <option value=''></option>
+                                                         <option value='File'>File</option>
+                                                         <option value='Web Url'>WEB URL</option>
+                                                         <option value='Text Message with Ok Cancel Option'>Text Message with Ok Cancel Option</option>
+                                                         <option value='Text Message with Ok Option'>Text Message with Ok Option</option>
+                                                         <option value='Text Message with Accept Decline Option'>Text Message with Accept Decline Option</option>
+                                                         <option value='Text Message with Yes No Option'>Text Message with Yes No Option</option>
+                                                         <option value='Text Message with Agree Disagree Option'>Text Message with Agree Disagree Option</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <textarea class="form-control artifact-textarea"  rows="3"></textarea>
+                                                      <input type="file" class="form-control-file hide"  >
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <input type="text" class="form-control">
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Active'>Active</option>
+                                                         <option value='Inactive'>Inactive</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td class="">
+                                                   <div class="form-check form-group d-flex justify-content-center ">
+                                                      <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something" >
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <%= current_user.name%>
+                                                </td>
+                                                <td>
+                                                   <%= DateTime.now%>
+                                                </td>
+                                             </tr>
+                                             <tr>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <input type="text" class="form-control">
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Member'>Member</option>
+                                                         <option value='System'>System</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <input type="text" class="form-control">
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Intro Message'>Intro Message</option>
+                                                         <option value='Well Child Care Info Flyer'> Well Child Care Info Flyer</option>
+                                                         <option value='Schedule an appointment'> Schedule an appointment</option>
+                                                         <option value='Create Calendar Reminder'> Create Calendar Reminder</option>
+                                                         <option value='Member Self Declaration of Completion'> Member Self Declaration of Completion</option>
+                                                         <option value='Thank you note'> Thank you note</option>
+                                                         <option value='Well Child Care Feedback'> Well Child Care Feedback</option>
+
+                                                         </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control artifact-selection">
+                                                         <option value=''></option>
+                                                         <option value='File'>File</option>
+                                                         <option value='Web Url'>WEB URL</option>
+                                                         <option value='Text Message with Ok Cancel Option'>Text Message with Ok Cancel Option</option>
+                                                         <option value='Text Message with Ok Option'>Text Message with Ok Option</option>
+                                                         <option value='Text Message with Accept Decline Option'>Text Message with Accept Decline Option</option>
+                                                         <option value='Text Message with Yes No Option'>Text Message with Yes No Option</option>
+                                                         <option value='Text Message with Agree Disagree Option'>Text Message with Agree Disagree Option</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                       <textarea class="form-control artifact-textarea"  rows="3"></textarea>
+                                                      <input type="file" class="form-control-file hide"  >
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <input type="text" class="form-control">
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Active'>Active</option>
+                                                         <option value='Inactive'>Inactive</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td class="">
+                                                   <div class="form-check form-group d-flex justify-content-center ">
+                                                      <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something" >
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <%= current_user.name%>
+                                                </td>
+                                                <td>
+                                                   <%= DateTime.now%>
+                                                </td>
+                                             </tr>
+                                             <tr>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <input type="text" class="form-control">
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Member'>Member</option>
+                                                         <option value='System'>System</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <input type="text" class="form-control">
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Intro Message'>Intro Message</option>
+                                                         <option value='Well Child Care Info Flyer'> Well Child Care Info Flyer</option>
+                                                         <option value='Schedule an appointment'> Schedule an appointment</option>
+                                                         <option value='Create Calendar Reminder'> Create Calendar Reminder</option>
+                                                         <option value='Member Self Declaration of Completion'> Member Self Declaration of Completion</option>
+                                                         <option value='Thank you note'> Thank you note</option>
+                                                         <option value='Well Child Care Feedback'> Well Child Care Feedback</option>
+
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control artifact-selection">
+                                                         <option value=''></option>
+                                                         <option value='File'>File</option>
+                                                         <option value='Web Url'>WEB URL</option>
+                                                         <option value='Text Message with Ok Cancel Option'>Text Message with Ok Cancel Option</option>
+                                                         <option value='Text Message with Ok Option'>Text Message with Ok Option</option>
+                                                         <option value='Text Message with Accept Decline Option'>Text Message with Accept Decline Option</option>
+                                                         <option value='Text Message with Yes No Option'>Text Message with Yes No Option</option>
+                                                         <option value='Text Message with Agree Disagree Option'>Text Message with Agree Disagree Option</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <textarea class="form-control artifact-textarea"  rows="3"></textarea>
+                                                      <input type="file" class="form-control-file hide"  >
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <input type="text" class="form-control">
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Active'>Active</option>
+                                                         <option value='Inactive'>Inactive</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td class="">
+                                                   <div class="form-check form-group d-flex justify-content-center ">
+                                                      <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something" >
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <%= current_user.name%>
+                                                </td>
+                                                <td>
+                                                   <%= DateTime.now%>
+                                                </td>
+                                             </tr>
+                                             <tr>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <input type="text" class="form-control">
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Member'>Member</option>
+                                                         <option value='System'>System</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <input type="text" class="form-control">
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Intro Message'>Intro Message</option>
+                                                         <option value='Well Child Care Info Flyer'> Well Child Care Info Flyer</option>
+                                                         <option value='Schedule an appointment'> Schedule an appointment</option>
+                                                         <option value='Create Calendar Reminder'> Create Calendar Reminder</option>
+                                                         <option value='Member Self Declaration of Completion'> Member Self Declaration of Completion</option>
+                                                         <option value='Thank you note'> Thank you note</option>
+                                                         <option value='Well Child Care Feedback'> Well Child Care Feedback</option>
+
+                                                         </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control artifact-selection">
+                                                         <option value=''></option>
+                                                         <option value='File'>File</option>
+                                                         <option value='Web Url'>WEB URL</option>
+                                                         <option value='Text Message with Ok Cancel Option'>Text Message with Ok Cancel Option</option>
+                                                         <option value='Text Message with Ok Option'>Text Message with Ok Option</option>
+                                                         <option value='Text Message with Accept Decline Option'>Text Message with Accept Decline Option</option>
+                                                         <option value='Text Message with Yes No Option'>Text Message with Yes No Option</option>
+                                                         <option value='Text Message with Agree Disagree Option'>Text Message with Agree Disagree Option</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                       <textarea class="form-control artifact-textarea"  rows="3"></textarea>
+                                                      <input type="file" class="form-control-file hide"  >
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <input type="text" class="form-control">
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Active'>Active</option>
+                                                         <option value='Inactive'>Inactive</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td class="">
+                                                   <div class="form-check form-group d-flex justify-content-center ">
+                                                      <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something" >
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <%= current_user.name%>
+                                                </td>
+                                                <td>
+                                                   <%= DateTime.now%>
+                                                </td>
+                                             </tr>
+                                          </tbody>
+                                       </table>
+                                    </div>
+                                    <div class="row">
+                                       <h3>Completion Criteria</h3>
+                                       <hr>
+                                    </div>
+                                    <div class="row">
+                                       <%# completion criteria---------- %>
+                                       <table class="table datatable">
+                                          <thead>
+                                             <tr>
+                                                <th width="50px">Sr No</th>
+                                                <th width="200px">Owner</th>
+                                                <th width="50px">Dependency</th>
+                                                <th width="200px">Action Name</th>
+                                                <th width="200px">Artifact Category</th>
+                                                <th width="300px">Artifact</th>
+                                                <th width="200px">Condition</th>
+                                                <th width="100px">Status</th>
+                                                <th>Logging</th>
+                                                <th>Updated By</th>
+                                                <th>Updated on</th>
+                                             </tr>
+                                          </thead>
+                                          <tbody>
+                                             <tr>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <input type="text" class="form-control">
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Member'>Member</option>
+                                                         <option value='System'>System</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <input type="text" class="form-control">
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Self Declaration'>Self Declaration</option>
+                                                         <option value='Auto'>Auto</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group artifact-selection">
+                                                      <select class="form-control artifact-selection">
+                                                         <option value=''></option>
+                                                         <option value='Text Message with Ok Cancel Option'>Text Message with Ok Cancel Option</option>
+                                                         <option value='Text Message with Ok Option'>Text Message with Ok Option</option>
+                                                         <option value='Text Message with Accept Decline Option'>Text Message with Accept Decline Option</option>
+                                                         <option value='Text Message with Yes No Option'>Text Message with Yes No Option</option>
+                                                         <option value='Text Message with Agree Disagree Option'>Text Message with Agree Disagree Option</option>
+                                                         <option value='Visit Type'>Visit Type</option>
+                                                         <option value='Speciality'>Speciality</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                       <textarea class="form-control artifact-textarea"  rows="3"></textarea>
+                                                      <input type="file" class="form-control-file hide"  >
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Well Child Visits'>Well Child Visits</option>
+                                                         <option value='Screening'>Screening</option>
+                                                         <option value='PCP'>PCP</option>
+                                                         <option value='OB GYN'>OB GYN</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Active'>Active</option>
+                                                         <option value='Inactive'>Inactive</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td class="">
+                                                   <div class="form-check form-group d-flex justify-content-center ">
+                                                      <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something" >
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <%= current_user.name%>
+                                                </td>
+                                                <td>
+                                                   <%= DateTime.now%>
+                                                </td>
+                                             </tr>
+                                             <tr>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <input type="text" class="form-control">
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Member'>Member</option>
+                                                         <option value='System'>System</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <input type="text" class="form-control">
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Self Declaration'>Self Declaration</option>
+                                                         <option value='Auto'>Auto</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control artifact-selection">
+                                                         <option value=''></option>
+                                                         <option value='Text Message with Ok Cancel Option'>Text Message with Ok Cancel Option</option>
+                                                         <option value='Text Message with Ok Option'>Text Message with Ok Option</option>
+                                                         <option value='Text Message with Accept Decline Option'>Text Message with Accept Decline Option</option>
+                                                         <option value='Text Message with Yes No Option'>Text Message with Yes No Option</option>
+                                                         <option value='Text Message with Agree Disagree Option'>Text Message with Agree Disagree Option</option>
+                                                         <option value='Visit Type'>Visit Type</option>
+                                                         <option value='Speciality'>Speciality</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <textarea class="form-control artifact-textarea"  rows="3"></textarea>
+                                                      <input type="file" class="form-control-file hide"  >
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Well Child Visits'>Well Child Visits</option>
+                                                         <option value='Screening'>Screening</option>
+                                                         <option value='PCP'>PCP</option>
+                                                         <option value='OB GYN'>OB GYN</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Active'>Active</option>
+                                                         <option value='Inactive'>Inactive</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td class="">
+                                                   <div class="form-check form-group d-flex justify-content-center ">
+                                                      <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something" >
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <%= current_user.name%>
+                                                </td>
+                                                <td>
+                                                   <%= DateTime.now%>
+                                                </td>
+                                             </tr>
+                                             <tr>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <input type="text" class="form-control">
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Member'>Member</option>
+                                                         <option value='System'>System</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <input type="text" class="form-control">
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Self Declaration'>Self Declaration</option>
+                                                         <option value='Auto'>Auto</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control artifact-selection">
+                                                         <option value=''></option>
+                                                         <option value='Text Message with Ok Cancel Option'>Text Message with Ok Cancel Option</option>
+                                                         <option value='Text Message with Ok Option'>Text Message with Ok Option</option>
+                                                         <option value='Text Message with Accept Decline Option'>Text Message with Accept Decline Option</option>
+                                                         <option value='Text Message with Yes No Option'>Text Message with Yes No Option</option>
+                                                         <option value='Text Message with Agree Disagree Option'>Text Message with Agree Disagree Option</option>
+                                                         <option value='Visit Type'>Visit Type</option>
+                                                         <option value='Speciality'>Speciality</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <textarea class="form-control artifact-textarea"  rows="3"></textarea>
+                                                      <input type="file" class="form-control-file hide"  >
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Well Child Visits'>Well Child Visits</option>
+                                                         <option value='Screening'>Screening</option>
+                                                         <option value='PCP'>PCP</option>
+                                                         <option value='OB GYN'>OB GYN</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="form-group">
+                                                      <select class="form-control">
+                                                         <option value=''></option>
+                                                         <option value='Active'>Active</option>
+                                                         <option value='Inactive'>Inactive</option>
+                                                      </select>
+                                                   </div>
+                                                </td>
+                                                <td class="">
+                                                   <div class="form-check form-group d-flex justify-content-center ">
+                                                      <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something" >
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <%= current_user.name%>
+                                                </td>
+                                                <td>
+                                                   <%= DateTime.now%>
+                                                </td>
+                                             </tr>
+                                          </tbody>
+                                       </table>
+                                       <%# completion criteria---------- %>
+                                    </div>
+                                 </form>
+                                 <button class="btn btn-primary next-button mt-4" data-next-target="review-part">Next</button>
+                              </div>
+
+                              <%# review step %>
+                              <div id="review-part" class="content  " role="tabpanel" aria-labelledby="review-part-trigger">
+                                  <form>
+                                     <div class="row text-center">
+                                       <h3>Possible Target Members <span class="badge badge-pill badge-success">8650</span>
+                                       </h3>
+                                    </div>
+                                    <div class="row">
+                                       <h3>Goal</h3>
+                                       <hr>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-sm-6">
+                                          <div class="form-group">
+                                             <label>Name</label>
+                                             <input type="text" class="form-control" placeholder="Enter Name" value="MediCal Re Enrollment Monthly" readonly>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-6">
+                                          <div class="form-group">
+                                             <label>Status</label>
+                                             <select class="form-control status-dropdown" readonly disabled>
+                                                <option value=''></option>
+                                                <option value='draft' selected>Draft</option>
+                                                <option value='active'>Active</option>
+                                                <option value='complete'>Complete</option>
+                                             </select>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-6">
+                                          <div class="form-group">
+                                             <label>Type</label>
+                                             <select class="form-control type-dropdown" readonly disabled>
+                                                <option value=''></option>
+                                                <option value='quality_measures' >Quality Measures</option>
+                                                <option value='announcement' selected>Announcement</option>
+                                                <option value='education'>Education</option>
+                                                <option value='health_event'>Health Event</option>
+                                                <option value='survey_feedback'>Survey / Feedback</option>
+                                             </select>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-6 hide type" data-type="announcement">
+                                          <div class="form-group">
+                                             <label>Name</label>
+                                             <select class="form-control" data-type="announcement" >
+                                                <option value=''></option>
+                                                <option value='Enrollment/Reenrollment'>Enrollment/Reenrollment</option>
+                                                <option value='New Provider / Remove Provider'>New Provider / Remove Provider</option>
+                                                <option value='New / Updates Benefit Coverage'>New / Updates Benefit Coverage</option>
+                                                <option value='New Support Service'>New Support Service</option>
+                                             </select>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-6 type" data-type="quality_measures" >
+                                          <div class="form-group">
+                                             <label>Category</label>
+                                             <select class="form-control" readonly disabled>
+                                                <option value=''></option>
+                                                <option value='Eligibility & Benefits' selected>Eligibility & Benefits</option>
+                                                <option value='Breast Cancer Screening'>Breast Cancer Screening</option>
+                                                <option value='Prenatal Pertussis'>Prenatal Pertussis</option>
+                                                <option value='Postpartum Care Visits'>Postpartum Care Visits</option>
+                                                <option value='Postpartum Birth Control'>Postpartum Birth Control</option>
+                                                <option value='All Childhood Vaccines'>All Childhood Vaccines</option>
+                                                <option value='Blood Lead Screening'>Blood Lead Screening</option>
+                                                <option value='Dental Fluoride Vaccine'>Dental Fluoride Vaccine</option>
+                                                <option value='Tobacco Use Screening'>Tobacco Use Screening</option>
+                                                <option value='Screening for Clinical Depression'>Screening for Clinical Depression</option>
+                                                <option value='Screening for Unhealthy Alcohol Use'>Screening for Unhealthy Alcohol Use</option>
+                                                <option value='Developmental Screening'>Developmental Screening</option>
+                                             </select>
+                                          </div>
+                                       </div>
+                                       <% start_date = (Date.today + 1.month).beginning_of_month%>
+                                       <div class="col-sm-6">
+                                          <div class="form-group">
+                                             <label>Goal Start Date</label>
+                                             <input type="text" class="form-control"  value="<%= start_date.strftime('%m/%d/%Y')%>" readonly >
+                                          </div>
+                                       </div>
+                                       
+                                       <div class="col-sm-6">
+                                          <div class="form-group">
+                                             <label>Goal End Date</label>
+                                             <input type="text" class="form-control"  value="<%=(start_date + 6.weeks).strftime('%m/%d/%Y')%>" readonly>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <h3>Member Selection</h3>
+                                       <hr>
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-sm-6">
+                                          <div class="form-group">
+                                             <label>By</label>
+                                             <select class="form-control by-dropdown" readonly disabled>
+                                                <option value=''></option>
+                                                <option value='Annual Month  /  Annual Renewal Date' selected> Annual Month  /  Annual Renewal Date</option>
+                                                <option value='gender'> Gender</option>
+                                                <option value='ethnicity'> Ethnicity</option>
+                                                <option value='zip_code'> Zip Code</option>
+                                                <option value='specialty'> Specialty</option>
+                                             </select>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-6  by" data-type="age">
+                                          <div class="form-group">
+                                             <label>Value</label>
+                                             <input type="text" class="form-control" placeholder="" value="" readonly  >
+                                             
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-6 hide by" data-type="gender">
+                                          <div class="form-group">
+                                             <label>Gender</label>
+                                             <select class="form-control" >
+                                                <option value=''></option>
+                                                <option value='male'>Male</option>
+                                                <option value='female'>Female</option>
+                                             </select>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-6 hide by" data-type="ethnicity">
+                                          <div class="form-group">
+                                             <label>Ethnicity</label>
+                                             <select class="form-control">
+                                                <option value=''></option>
+                                                <option value='White'>White</option>
+                                                <option value='Black'>Black</option>
+                                                <option value='Latino'>Latino</option>
+                                                <option value='Asian'>Asian</option>
+                                                <option value='American Indian'>American Indian</option>
+                                                <option value='Pacific Islander'>Pacific Islander</option>
+                                             </select>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-6 hide by" data-type="specialty">
+                                          <div class="form-group">
+                                             <label>Speciality</label>
+                                             <select class="form-control" >
+                                                <option value=''></option>
+                                                <option value='OB GYN'>OB GYN</option>
+                                                <option value='Primary Care'>Primary Care</option>
+                                                <option value='Psychiatric'>Psychiatric</option>
+                                             </select>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-6 hide by" data-type="zip_code">
+                                          <div class="form-group " >
+                                             <label>ZIP Code</label>
+                                             <input type="text" class="form-control" placeholder="Enter ZIP Code">
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                       <h3>Action Plan</h3>
+                                       <hr>
+                                    </div>
+                                    <div class="row">
+                                    <table class="mt-3 table table-striped table-valign-middle" style="height: 200px; overflow-y: auto">
+                                       <thead>
+                                          <tr>
+                                             <th>Action Name</th>
+                                             <th>Artifact Category</th>
+                                             <th>Status</th>
+                                             <th>Logging</th>
+                                             <th>
+                                                Updated at
+                                             </th>
+                                          </tr>
+                                       </thead>
+                                       <tbody>
+                                          <tr>
+                                             <td>Intro Message</td>
+                                             <td >Text Message</td>
+                                             <td>Active</td>
+                                             <td> 
+                                                <div class="form-check form-group d-flex justify-content-center ">
+                                                <input class="form-check-input" checked type="checkbox" id="check1" name="option1" value="something" >
+                                                </div>
+                                            </td>
+                                             <td>
+                                                <%= Time.now.strftime(' %d %b %Y ') %>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>MediCal Re Enrollment Flyer</td>
+                                             <td>File</td>
+                                             <td>Active</td>
+                                             <td> 
+                                                    <div class="form-check form-group d-flex justify-content-center ">
+                                                    <input class="form-check-input" checked type="checkbox" id="check1" name="option1" value="something" >
+                                                    </div>
+                                            </td>
+                                             <td>
+                                                <%= Time.now.strftime(' %d %b %Y ') %>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>Address Verification - Online</td>
+                                             <td >Text Message with Yes No Option</td>
+                                             <td>Active</td>
+                                             <td> 
+                                                <div class="form-check form-group d-flex justify-content-center ">
+                                                <input class="form-check-input" checked type="checkbox" id="check1" name="option1" value="something" >
+                                                    </div>
+                                            </td>
+                                             <td>
+                                                <%= Time.now.strftime(' %d %b %Y ') %>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>Address Confirmation</td>
+                                             <td >Web Url</td>
+                                             <td>Active</td>
+                                             <td> 
+                                                <div class="form-check form-group d-flex justify-content-center ">
+                                                <input class="form-check-input" checked type="checkbox" id="check1" name="option1" value="something" >
+                                                    </div>
+                                            </td>
+                                             <td>
+                                                <%= Time.now.strftime(' %d %b %Y ') %>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>Re Enrollment Options Info</td>
+                                             <td >Text Message with Yes No Option</td>
+                                             <td>Active</td>
+                                             <td> 
+                                                <div class="form-check form-group d-flex justify-content-center ">
+                                                <input class="form-check-input" checked type="checkbox" id="check1" name="option1" value="something" >
+                                                    </div>
+                                            </td>
+                                             <td>
+                                                <%= Time.now.strftime(' %d %b %Y ') %>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>Supporting Documents List</td>
+                                             <td>File</td>
+                                             <td>Active</td>
+                                             <td> 
+                                                    <div class="form-check form-group d-flex justify-content-center ">
+                                                    <input class="form-check-input" checked type="checkbox" id="check1" name="option1" value="something" >
+                                                    </div>
+                                            </td>
+                                             <td>
+                                                <%= Time.now.strftime(' %d %b %Y ') %>
+                                             </td>
+                                          </tr>
+
+                                          <tr>
+                                             <td>Online Re Enrollment Tutorial</td>
+                                             <td>Web Url</td>
+                                             <td>Active</td>
+                                             <td> 
+                                                <div class="form-check form-group d-flex justify-content-center ">
+                                                   <input class="form-check-input" checked type="checkbox" id="check1" name="option1" value="something" >
+                                                </div>
+                                          </td>
+                                             <td>
+                                                <%= Time.now.strftime(' %d %b %Y ') %>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>Online MediCal Re Enrollment Application Submission</td>
+                                             <td >Web Url</td>
+                                             <td>Active</td>
+                                             <td> 
+                                                <div class="form-check form-group d-flex justify-content-center ">
+                                                   <input class="form-check-input" checked type="checkbox" id="check1" name="option1" value="something" >
+                                                </div>
+                                          </td>
+                                             <td>
+                                                <%= Time.now.strftime(' %d %b %Y ') %>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>Member Self Declaration of Completion</td>
+                                             <td >Text Message with Yes No Option</td>
+                                             <td>Active</td>
+                                             <td> 
+                                                <div class="form-check form-group d-flex justify-content-center ">
+                                                   <input class="form-check-input" checked type="checkbox" id="check1" name="option1" value="something" >
+                                                </div>
+                                          </td>
+                                             <td>
+                                                <%= Time.now.strftime(' %d %b %Y ') %>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>Send Re Enrollment Case Info to health insurance</td>
+                                             <td >Text Message with Yes No Option</td>
+                                             <td>Active</td>
+                                             <td> 
+                                                <div class="form-check form-group d-flex justify-content-center ">
+                                                   <input class="form-check-input" checked type="checkbox" id="check1" name="option1" value="something" >
+                                                </div>
+                                          </td>
+                                             <td>
+                                                <%= Time.now.strftime(' %d %b %Y ') %>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>Thank you note</td>
+                                             <td >Text Message with OK Option</td>
+                                             <td>Active</td>
+                                             <td> 
+                                                <div class="form-check form-group d-flex justify-content-center ">
+                                                   <input class="form-check-input" checked type="checkbox" id="check1" name="option1" value="something" >
+                                                </div>
+                                          </td>
+                                             <td>
+                                                <%= Time.now.strftime(' %d %b %Y ') %>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>Feedback on Re Enrollment Experience</td>
+                                             <td >Text Message with Yes No Option</td>
+                                             <td>Active</td>
+                                             <td> 
+                                                <div class="form-check form-group d-flex justify-content-center ">
+                                                   <input class="form-check-input" checked type="checkbox" id="check1" name="option1" value="something" >
+                                                </div>
+                                          </td>
+                                             <td>
+                                                <%= Time.now.strftime(' %d %b %Y ') %>
+                                             </td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
+
+                                    </div>
+                                   
+                                 </form>
+                                 <button class="btn btn-primary next-button" data-next-target="launch-part">Launch</button>
+                              </div>
+                              <div id="launch-part" class="content " role="tabpanel" aria-labelledby="launch-part-trigger">
+
+                                    <div class="card">
+                                       <div class="card-body">
+                                          <h3 class="text-center text-primary">
+                                             <b>MediCal Re Enrollment Monthly </b>
+                                          </h3>
+                                          <h3 class="text-center mt-4 mb-3">Possible Target Members <span class="badge badge-pill badge-success">8650</span></h3>
+                                          
+                                          <div class="row">
+                                             <div class="col-6 offset-3 mt-2 mb-2">
+                                                <table class="table table-bordered">
+                                                   <thead>
+                                                      <tr>
+                                                         <th colspan='2' class="text-center">Goal Information</th>
+                                                      </tr>
+                                                   </thead>
+                                                   <tbody>
+                                                      <tr>
+                                                         <td>Type</td>
+                                                         <td>Announcement</td>
+                                                      </tr>
+                                                      <tr>
+                                                         <td>Catgory</td>
+                                                         <td>Eligibility & Benefits</td>
+                                                      </tr>
+                                                      <tr>
+                                                         <td>By</td>
+                                                         <td>Annual Month  /  Annual Renewal Date</td>
+                                                      </tr>
+                                                      <tr>
+                                                        <% start_date = (Date.today + 1.month).beginning_of_month%>
+                                                         <td>Start Date</td>
+                                                         <td><%= start_date.strftime('%m/%d/%Y')%></td>
+                                                      </tr>
+                                                      <tr>
+                                                         <td>End Date</td>
+                                                         <td><%=(start_date + 6.weeks).strftime('%m/%d/%Y')%></td>
+                                                      </tr>
+                                                   </tbody>
+                                                </table>
+                                             </div>
+                                             
+                                          </div>
+                                          <div class="row">
+                                             <div class="col-6 offset-3 mt-2 mb-2">
+                                                <div class="ribbon">
+                                                   <span class="left-fold">
+                                                   </span>
+                                                   <h3>Congratulation on launching your MediCal Re Enrollment announcement goal</h3>
+                                                   <span class="right-fold">
+                                                   </span>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>       
+                                    <button class="btn btn-primary launch-button hide">Launch</button>                          
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+</div>
+
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+<script>
+    $(function () {
+        $(".type-dropdown").unbind('change').bind('change', function(){
+            console.log('aaa')
+            let value = $(this).val()
+            $('.col-sm-6.type').addClass('hide')
+            $(`.col-sm-6[data-type=${value}]`).removeClass('hide')
+        })
+        $(".by-dropdown").unbind('change').bind('change', function(){
+            let value = $(this).val()
+            console.log(value)
+            $('.col-sm-6.by').addClass('hide')
+            $(`.col-sm-6[data-type=${value}]`).removeClass('hide')
+        })
+
+        $(".artifact-selection").unbind('change').bind('change', function(){
+            let value = $(this).val();
+            if (value === 'File'){
+               $(this).closest('tr').find('.artifact-textarea').addClass('hide')
+               $(this).closest('tr').find('input[type="file"]').removeClass('hide')
+            }else{
+               $(this).closest('tr').find('.artifact-textarea').removeClass('hide')
+               $(this).closest('tr').find('input[type="file"]').addClass('hide')
+            }
+        })
+
+        $(".next-button").unbind('click').bind('click', function(){
+         console.log("click")
+            var nextTarget = $(this).attr('data-next-target')
+            $(`.step`).removeClass('active')
+            $(`.step[data-target='#${nextTarget}']`).addClass('active')
+
+            $(".content.active.dstepper-block").removeClass('active dstepper-block')
+            $(`#${nextTarget}`).addClass('active dstepper-block')
+        })
+    })
+
+    $(document).ready( function () {
+      $('.datatable').DataTable(
+         {
+         paging: false,
+         info: false,
+         searching: false,
+         "scrollX": true,
+         "ordering": false
+         }
+      );
+   } );
+</script>

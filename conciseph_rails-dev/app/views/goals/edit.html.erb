@@ -1,0 +1,9 @@
+<%=render "shared/form" ,goal: @goal , disabled: false%>
+  <script>
+    // TODO sachin- no need to loop through each  $(".nested-fields") if values are pre populated . just $(".nested-fields .artifact-select").trigger('change') will works the same way .--done
+
+    $(function () {
+      $(" .artifact-select").trigger('change')
+      $(".criteria-val:not(.hide) .form-control").trigger('change')
+    })
+  </script>

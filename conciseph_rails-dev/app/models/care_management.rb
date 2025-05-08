@@ -1,0 +1,88 @@
+# frozen_string_literal: true
+
+class CareManagement < ApplicationRecord
+  # frozen_string_literal: true
+
+  after_save :create_user_actions
+  include Launchable
+  include Overseers::OverseersSearch
+  include Duplicatable
+  attr_accessor :save_to_draft, :goal_id, :template_id
+
+  # has_many :milestone
+  has_many :milestones, as: :milestonable, dependent: :destroy
+  has_many :action_steps, through: :milestones
+  has_many :member_selections, as: :selectable, dependent: :destroy
+  has_many :user_actions, as: :actionable, dependent: :destroy
+
+  belongs_to :owner, class_name: 'User', foreign_key: 'owner_id'
+
+  validates :name, :care_management_type, :care_management_category, :status, :start_date, :end_date, :section,
+            presence: true
+  validate :date_checker
+
+  # accepts_nested_attributes_for :action_steps, allow_destroy: true
+  accepts_nested_attributes_for :milestones, allow_destroy: true
+  accepts_nested_attributes_for :member_selections, allow_destroy: true
+
+  has_one_attached :icon
+
+  before_save :set_default_attachment_if_not_present, if: -> { goal_id.present? || template_id.present? }
+  enum section: {
+    "TCM - Post Hospitalization": 0,
+    "TCM - Transition from Skilled Nurse Facility": 1,
+    "CCM - Multiple Chronic Conditions": 2,
+    "ECM - Person with Substance Use Disorder , PTSD": 3,
+    "Continuity of Care - Post Pregnancy, Organ Transplant": 4
+  }
+
+  enum care_management_category: {
+    'Transition Care Management': 0,
+    'Complex Care Management': 1,
+    'Enhance Care Management': 2,
+    'Long Term Care': 3
+  }, _prefix: true
+
+  enum status: {
+    'Draft': 0,
+    'Active': 1,
+    'Completed': 2
+  }
+
+  enum care_management_type: {
+    'Care Management': 0
+  }
+
+  def icon_url
+    icon.attached? ? Rails.application.routes.url_helpers.rails_blob_url(icon,only_path: true) : ''
+  end
+
+  private
+
+  def create_user_actions
+    return unless status == 'Active'
+
+    CreateUserActionsJob.perform_later(self)
+  end
+
+  def date_checker
+    return unless start_date && end_date && start_date > end_date
+
+    errors.add(:base, 'Start date should be before the end date')
+  end
+
+  def self.search(params)
+    category = params[:category]
+    page = params[:page] || 1
+    per_page = params[:per_page] || 10
+
+    query = eager_load(:user_actions, :owner).all
+    query = query.where(care_management_category: category) if category.present?
+
+    query.page(page).per(per_page)
+  end
+
+  # def copy_model_attr
+
+  # end
+end

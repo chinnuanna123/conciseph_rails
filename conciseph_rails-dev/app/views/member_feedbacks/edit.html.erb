@@ -1,0 +1,7 @@
+<%= render 'shared/form', goal: @member_feedback, disabled: false %>
+<script>
+    $(function () {
+      $(" .artifact-select").trigger('change')
+      $(".criteria-val:not(.hide) .form-control").trigger('change')
+    })
+  </script>

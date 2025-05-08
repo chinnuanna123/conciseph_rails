@@ -1,0 +1,71 @@
+<tr class="nested-fields">
+  <td>
+    <%= f.text_field :name, class: "form-control" ,disabled: local_assigns [:disabled] ,required: true%>
+  </td>
+  <td>
+    <%= f.select :action, ActionStep.actions.keys,{ prompt: 'Select ' }, class: "form-control action_select" , disabled:local_assigns [:disabled]  ,required: true%>
+      
+  </td>
+  <td>
+    <%= f.select :interaction, ActionStep.interactions.keys, { prompt: 'Select ' }, class: "form-control" ,
+      disabled: local_assigns [:disabled] ,required: true %>
+  </td>
+  <td>
+    <%= f.text_area :message, class: "form-control" , disabled: local_assigns [:disabled] ,required: true %>
+  </td>
+  <td>
+    <%= f.select :artifact_type, ActionStep.artifact_types.keys, { prompt: 'Select ' },class: "form-control artifact-select" , disabled: local_assigns [:disabled]  %>
+      
+  </td>
+  <%#controller_name == "goals" ? goal = @goal : goal = @announcement%>
+  <%if !goal.persisted? || action_name=="edit" %>
+    <td >
+      <div id="nothing-selected" class="artifact-field text-muted">
+        Nothing Selected
+      </div>
+      <div id="artifact-document" class="artifact-field hide">
+        <%= f.file_field :artifact_document, class: "form-control" ,accept: ".pdf, .doc, .docx" %>
+      </div>
+      <div id="artifact-video" class="artifact-field hide">
+        <%= f.file_field :artifact_video, class: "form-control" ,accept: ".mp4, .mpeg" %>
+      </div>
+      <div id="artifact-web-url" class="artifact-field hide">
+        <%= f.text_area :artifact_url, class: "form-control" %>
+      </div>
+
+    </td>
+    <%else%>
+      <td>
+        <% if f.object.artifact_document.attached? %>
+        <div id="artifact-document-icon" class="artifact-field hide">
+            <i class="fa fa-file-alt mr-3"></i>
+            <%= link_to f.object.artifact_document.filename , rails_blob_path(f.object.artifact_document), target: "_blank" %>           
+        </div>
+        <% elsif f.object.artifact_video.attached? %>
+        <div id="artifact-video-icon" class="artifact-field hide">
+            <i class="fa fa-play mr-3 "></i>
+            <%= link_to f.object.artifact_video.filename , rails_blob_path(f.object.artifact_video), target: "_blank" %>
+              
+        </div>
+        <% elsif f.object.artifact_url.present? %>
+        <div id="artifact-web-url-icon" class="artifact-field hide">
+          <i class="fa fa-link mr-3"></i>
+          <a href=<%=f.object.artifact_url%>><%= f.object.artifact_url%></i></a>
+
+        </div>
+        <% elsif !f.object.artifact_document.attached? && !f.object.artifact_video.attached? && !f.object.artifact_url.present? %>
+        <div id="nothing-selected-icon" class="artifact-field-icon  ">
+            <i class="fas fa-times mr-3"></i>
+            <span class="text-muted">Nothing Selected</span>
+        </div>
+        <% end %>
+      </td>
+      <%end%>
+        <%if !goal.persisted? || action_name=="edit" %>
+          <td>
+            <%= link_to_remove_association raw("<span class='fa fa-trash'></span>"),f %>
+          </td>
+        <%end%>
+</tr>
+
+

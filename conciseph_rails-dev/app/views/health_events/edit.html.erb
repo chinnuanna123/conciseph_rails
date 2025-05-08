@@ -1,0 +1,7 @@
+<%= render 'shared/form', goal: @health_event, disabled: false %>
+<script>
+    $(function () {
+      $(" .artifact-select").trigger('change')
+      $(".criteria-val:not(.hide) .form-control").trigger('change')
+    })
+  </script>

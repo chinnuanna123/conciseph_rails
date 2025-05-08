@@ -1,0 +1,305 @@
+<style>
+.hide {
+    display: none;
+}
+
+</style>
+<!-- <h1>Goals</h1> -->
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          
+          <h1 class="m-0 text-dark"><%= params[:action].titleize%> Templates</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="<%= root_path%>">Home</a></li>
+            <li class="breadcrumb-item active">Templates</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="content">
+    <div class="container-fluid">
+      
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <%= form_with(model: custom_template, local: true) do |form| %>
+              <% if custom_template.errors.any? %>
+                <div id="error_explanation">
+                  <h2>
+                    <%= pluralize(custom_template.errors.count, "error") %> prohibited this template from being saved:
+                  </h2>
+
+                  <ul>
+                    <% custom_template.errors.full_messages.each do |message| %>
+                      <li>
+                        <%= message %>
+                      </li>
+                    <% end %>
+                  </ul>
+                </div>
+              <% end %>
+
+              <div class="card">
+                <div class="card-header">
+                  <%= params[:action].titleize%> Template
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                      <div class="form-group">
+                        <%= form.label :name, class: "form-label required" %>
+                        <%= form.text_field :name, class: "form-control", required: true %>
+                        <%=form.hidden_field :custom_template_id, value: params[:custom_template_id]%>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                      <div class="form-group">
+                        <%= form.label :functional_area, class: "form-label required" %>
+                        <%= form.select :functional_area, options_for_select(CustomTemplate.functional_areas.keys.map{|key| [key.to_s.titleize ,key]}, form.object.functional_area), {prompt: 'Select'}, class: "form-control", required: true %>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                      <div class="form-group">
+                        <%= form.label :campaign_name, 'Goal Type', class: "form-label required" %>
+                        <%= form.select :campaign_name, options_for_select(CustomTemplate.campaign_names.keys, form.object.campaign_name), {prompt: 'Select'}, class: "form-control campaign-name", required: true %>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                      <div class="form-group">
+                        <%= form.label :category, class: "form-label required" %>
+                        <%= form.select :category, options_for_select(@category_options || [], form.object.category), {prompt: 'Select'}, class: "form-control category-name", required: true %>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 hide">
+                      <div class="form-group">
+                        <%= form.label :section, class: "form-label required" %>
+                        <%= form.select :section,[], {prompt: 'Select'}, class: "form-control section", value: nil %>
+                      </div>
+                    </div>                 
+                    <div class="col-sm-12 col-md-6">
+                      <div class="form-group">
+                        <%= form.label :icon , class: "form-label" %>
+
+                        <%= form.file_field :icon ,class: "form-control", 'data-direct-upload': true  %>
+                      </div>
+                      <% if custom_template.icon.attached? %>
+                        <%= form.hidden_field :icon, value: form.object.icon.signed_id%>
+                        <div class="form-group mt-2">
+                          <%= link_to custom_template.icon.filename.to_s, custom_template.icon_url, target: 'blank' %>
+                        </div>
+                      <% end %>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                      <div class="form-group">
+                       <%= form.label :description , class: "form-label required" %>
+                      <%= form.text_area :description ,class: "form-control" , rows: 5 ,required: true%>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <h3>Milestones</h3>
+                </div>
+                <div class="card-body">
+                  <div class="row">                
+                      <%=form.fields_for :milestones do |f|%>
+                        <%=render 'shared/milestones_fields', f: f, goal: custom_template, disabled: disabled%>
+                      <%end%>
+                      <div class="mt-4 mb-4">
+                        <%= link_to_add_association_for_milestones 'Add Milestone' , form, :milestones, 'shared/milestones_fields', custom_template, 'add_milestone_fields' %>
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  Inactive/Active
+                </div>
+                <div class="card-body">
+                  <div class="custom-control custom-switch ml-2">
+                      <%= form.check_box :is_active, class: "custom-control-input ", id: "customSwitch1" %>
+                      <%= form.label :is_active, class: "custom-control-label", for: "customSwitch1" , style: 'color: #343a40;font-weight: 500' do %>
+                        Inactive/Active
+                      <% end %>
+                  </div>
+                </div>
+              </div>
+              <!--false __________-start-->
+              <%if false%>
+              <div class="card">
+                <div class="card-header">
+                   Steps
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                      <div class="form-group">
+                        <%= form.label :name, class: "form-label required" %>
+                        <%= form.text_field :name, class: "form-control", required: true %>
+                        <%= form.hidden_field :save_to_draft, value: false, id: 'save-to-draft' %>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                      <div class="form-group">
+                        <%= form.label :section, class: "form-label required" %>
+                        <%= form.text_field :section, class: "form-control", required: true %>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                      <div class="form-group">
+                       <%= form.label :description , class: "form-label required" %>
+                      <%= form.text_area :description ,class: "form-control" , rows: 5 ,required: true%>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                      <div class="form-group">
+                        <%= form.label :icon , class: "form-label" %>
+                        <%= form.file_field :icon ,class: "form-control"  %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <%end%>
+              <!--false __________-end-->
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-1">
+                        <div class="actions">
+                          <%= link_to 'Cancel', custom_templates_url, class: "btn btn-outline-secondary draft-btn" %>
+                        </div>
+                    </div>
+                    <div class="col-1">
+                        <div class="actions">
+                          <%= form.submit 'Submit',class: "btn btn-primary new-btn" %>
+                        </div>
+                    </div>
+                    <!--<div class="col-2">
+                        <div class="actions">
+                          <%#= link_to 'Save As Draft','#', class: "btn btn-outline-secondary draft-btn" %>
+                        </div>
+                    </div>-->
+                  </div>
+
+                </div>
+              </div>             
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+$(function(){
+  bindClicks()
+    console.log($(".add_fields"))
+  $(document).on('click', ".add_fields, .add_milestone_fields", function () {
+     setTimeout(() => {
+       bindClicks();
+     }, 500);
+   })
+ 
+  $(" .artifact-select").trigger('change')
+  categoryHashSelector()
+})
+function bindClicks(){
+  console.log('dfdasfdfsdfdsf')
+  $(".artifact-select").unbind('change').bind('change', function () {
+      let selected = $(this).val()
+      let $tr = $(this).closest(".nested-fields")
+      $tr.find(".artifact-field").addClass('hide');
+
+      if (selected === 'document') {
+        $tr.find("#artifact-document").removeClass('hide');
+        $tr.find("#artifact-document-icon").removeClass('hide');
+      } else if (selected === 'video') {
+        $tr.find("#artifact-video").removeClass('hide');
+        $tr.find("#artifact-video-icon").removeClass("hide");
+      } else if (selected === 'web_url') {
+        $tr.find("#artifact-web-url").removeClass('hide');
+        $tr.find("#artifact-web-url-icon").removeClass('hide');
+      } else {
+        $tr.find("#nothing-selected").removeClass('hide');       
+
+      }
+  })
+  action_artifact_type()
+  saveAsDraft()
+  $('.action_select').trigger('change')
+}
+
+function action_artifact_type(){
+    $('.action_select').unbind('change').bind('change', function(){
+      val = $(this).val()
+      console.log(val)
+      let $tr = $(this).closest('.nested-fields')
+      $tr.find(".artifact-select, .artifact-field").prop('disabled', false);
+
+      if (val === 'Display Flyer') {
+        $tr.find(".artifact-select").val('document');
+      } else if (val === 'Play Video') {
+       $tr.find(".artifact-select").val('video');
+      } else if (val === 'Launch External Website or Link') {
+       $tr.find(".artifact-select").val('web_url');
+      } else {
+        $tr.find(".artifact-select").val('');
+
+      }
+        $tr.find(".artifact-select").prop('disabled', true);
+      $('.artifact-select').trigger('change')
+    })
+  }
+
+function categoryHashSelector(){
+  $('.campaign-name').unbind('change').bind('change', function(){
+    selectedVal = $(this).val()
+    console.log(selectedVal)
+    $.ajax({
+      url: '/custom_templates/get_category',
+      type: 'POST',
+      headers: {
+        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') // Fetch the CSRF token from the meta tag
+      },
+      data: { campaign_name: selectedVal },
+      success: function(response) {
+        console.log('response', response)
+        $('.category-name').empty().append('<option value="">Select</option>');
+        $('.section').empty().append('<option value="">Select</option>');
+         $.each(response.category, function(index, option) {
+            var $option_1 = $('<option></option>')
+            .attr('value', option[1])
+            .text(option[0]);
+          $('.category-name').append($option_1);
+        });
+         $.each(response.section, function(index, option) {
+            var $option_1 = $('<option></option>')
+            .attr('value', option[1])
+            .text(option[0]);
+          $('.section').append($option_1);
+        });
+      }
+    });
+
+  })
+}
+function saveAsDraft(){
+    $('.draft-btn').unbind('click').bind('click', function(event){
+      event.preventDefault()
+      console.log('saveAsDraft')
+      $('#save-to-draft').val('true')
+      $(this).closest('form').find('.new-btn').click()
+      $('#save-to-draft').val('false')
+    })
+  }
+
+</script>

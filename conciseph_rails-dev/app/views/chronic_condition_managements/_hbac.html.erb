@@ -1,0 +1,25 @@
+<%= render partial: "/shared/pagination", locals: {objekt: vitals}%>
+<table class="table table-striped">
+    <thead>
+        <tr>
+        <th>Member Name</th>
+        <th>Readings</th>
+        <th>Reported Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <%if vitals.present?%>
+          <% vitals.each do |vital|%>
+              <%user = vital.user%>
+              <tr>
+                  <td><%= user.name%></td>
+                  <td><%= vital.value%></td>
+                  <td><%=vital.created_at.strftime('%Y-%m-%d')%></td>
+              </tr>
+          <% end %>
+        <%else%>
+              <tr><td colspan=12 class="text-center">No data </td></tr>
+        <%end%>
+    </tbody>
+</table>
+<%= render partial: "/shared/pagination", locals: {objekt: vitals}%>

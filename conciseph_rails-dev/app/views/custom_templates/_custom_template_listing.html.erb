@@ -1,0 +1,30 @@
+<%model_name = controller_name.singularize%>
+<% models.each do |custom_template| %>
+                      <tr>
+                        <td><%= custom_template.functional_area.titleize %></td>
+                        <td><%= custom_template.name %></td>
+                        <td><%= custom_template.campaign_name %></td>
+                        <td><%= custom_template.is_active ? 'Active' : 'Draft'%></td>
+                        <td><%= current_user&.name || 'name not available' %></td>
+                        <td><%= format_date_time(custom_template.updated_at)%></td>           
+                        <td>
+                          <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle menu-dropdown table" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                             <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                            <ul class="dropdown-menu ">
+                              <li><a class="dropdown-item" href="<%=custom_template_path(custom_template)%>" >View</a></li>
+                              <li><a class="dropdown-item" href="<%= new_custom_template_path(custom_template_id: custom_template.id)%>" >Duplicate this Template</a></li>
+                              <li><a class="dropdown-item" href="<%=edit_custom_template_path(custom_template)%>" >Edit</a></li>
+                              <li>
+                                <%if custom_template.is_active%>
+                                  <a class="dropdown-item" href="<%=send("new_#{custom_template.get_model.to_s.underscore}_path",{template_id: custom_template.id} )%>">Create Goal</a>
+                                <%end%>
+                              </li>
+                              <li><a class="dropdown-item" href="<%=custom_template_path(custom_template, authenticity_token: form_authenticity_token)%>" data-confirm='Are you sure?' data-method='delete'>Delete</a></li>
+                            </ul>
+                          </div>
+                        </td>                     
+                      </tr>
+                      <% end %>
+                      <%= render partial: "/shared/pagination", locals: {objekt: @custom_templates}%>

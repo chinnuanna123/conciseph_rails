@@ -1,0 +1,7 @@
+Style/Documentation:
+  Exclude:
+    - 'app/services/goal_duplication/**/*'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'app/services/goal_duplication/**/*'

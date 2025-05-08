@@ -1,0 +1,23 @@
+<table class="table">
+    <thead>
+        <tr>
+        <th style="width: 10px">Email</th>
+        <th>Name</th>
+        <th>Tracking For</th>
+        <th>Counter</th>
+        <th>Updated At</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @trackings.each do |tracking|%>
+            <tr>
+                <td><%= tracking.user&.email%></td>
+                <td><%= tracking.user&.name&.titleize%></td>
+                <td><%= tracking.tracking_for%></td>
+                <td><%= tracking.counter%></td>
+                <td><%= tracking.updated_at.strftime('%A, %d %b %Y %l:%M %p')%></td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
+<%= render partial: "/shared/pagination", locals: {objekt: @users}%>

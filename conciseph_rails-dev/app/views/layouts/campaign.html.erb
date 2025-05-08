@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <title>Admin</title>
+   <%= csrf_meta_tags %>
+   <%= csp_meta_tag %>
+
+   <%= stylesheet_link_tag 'admin', media: 'all', 'data-turbolinks-track': 'reload' %>
+   <%= javascript_pack_tag 'admin', 'data-turbolinks-track': 'reload' %>
+   <script src="https://kit.fontawesome.com/6d90f39943.js"></script>
+
+   <style>
+  .hide{
+        display: none !important;
+  }
+  table tbody tr td{
+      padding-left: 5px !important;
+      padding-right: 5px !important;
+  }
+  table tbody tr .form-control{
+      padding: 0 5px !important;
+  }
+
+
+.ribbon {
+  position: relative;
+  background: #0070BB;
+  color: white;
+  display: block;
+  width: 90%;
+  margin: 0 auto;
+  font-family: Source Sans Pro;
+  text-align: center;
+  z-index: 3;
+}
+
+.ribbon:before {
+  position: absolute;
+  /* content: ""; */
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 12px 12px 0;
+  border-color: transparent #005999 transparent transparent;
+  left: -1px;
+  bottom: -12px;
+  z-index: 1;
+}
+
+.ribbon:after {
+  position: absolute;
+  /* content: ""; */
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 12px 12px 0 0;
+  border-color: #005999 transparent transparent transparent;
+  right: -1px;
+  bottom: -12px;
+  z-index: 1;
+}
+
+.ribbon .left-fold {
+  
+
+   background-image: linear-gradient(-90deg,#005188, #0061a2);
+   position: absolute;
+   height: 25px;
+
+   width: 0px;
+   left: 0px;
+   bottom: 0px;
+   display: block;
+   margin: 0;
+   border-right: 1px solid #005188;
+}
+
+.ribbon .left-fold:before {
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 15px 25px 0;
+  border-color: transparent #005999 transparent transparent;
+  left: -15px;
+  top: 0;
+}
+
+.ribbon .left-fold:after {
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 0 25px 15px;
+  border-color: transparent transparent #005999 transparent;
+  left: -15px;
+  bottom: 0;
+}
+
+.ribbon h3 {
+  z-index: 2;
+  position: relative;
+  background: #0070BB;
+  width: 100%;
+  display: block;
+  font-size: 15px;
+  line-height: 1.3em;
+  padding: 5px 0;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.ribbon .right-fold {
+   position: absolute;
+   height: 25px;
+
+    width: 25px;
+    right: 0px;
+    bottom: 0px;
+    display: block;
+    margin: 0;
+    border-left: 1px solid #006699;
+}
+
+.ribbon .right-fold:before {
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 25px 15px 0 0;
+  border-color: #005999 transparent transparent transparent;
+  right: -15px;
+  top: 0;
+}
+
+.ribbon .right-fold:after {
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 25px 0 0 15px;
+  border-color: transparent transparent transparent #005999;
+  right: -15px;
+  bottom: 0;
+}
+.required:after{
+    width: 500px;
+    content:"*";
+    color:red;
+  }
+</style>
+<%= csrf_meta_tags %>
+<%= csp_meta_tag %>
+
+
+<%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+ </head>
+
+ <body class="hold-transition sidebar-mini layout-fixed">
+   <div class="wrapper">
+     <%#= render "layouts/admin_nav" %>
+     <%= render "/shared/admin_side_nav" %>
+    <div class="content-wrapper">
+        <%= render :partial=>'/shared/campaigns/header'%>
+        <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-default">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="bs-stepper">
+                                <%= render :partial=>'/shared/campaigns/step_header'%>
+                                <div class="bs-stepper-content">
+                                    <%= yield %>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- modal -->
+     <div class="modal fade hide" id="modal-default" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="card" id="data-to-append">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary close-modal pull-right">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-backdrop fade hide" style="display: none"></div>
+     <%= render "/shared/admin_footer" %>
+   </div>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+
+  <script>
+  $(function(){
+      $(document).on('click', '.modal-header .close, .modal-footer .close-modal', function() {
+      hideModal();
+    });
+
+    $(document).on('click', '#members-count', function(e) {
+      e.preventDefault();
+      showModal();
+    });
+     function showModal(){
+      console.log('show-modal')
+         $("#modal-default, .modal-backdrop").removeClass('hide').addClass('show')
+          .attr('role', 'dialog')
+          .css('display', 'block')
+     }
+
+     function hideModal(){
+           $("#data-to-append").html('')
+          $("#modal-default, .modal-backdrop").addClass('hide').removeClass('show')
+          .removeAttr('role')
+          .css('display', 'none')
+          
+     }
+    })
+  $(function(){
+    indexMilestones()
+  })
+    $(document).off('click.add_fields'); 
+    $(document).on('click.add_fields', '.add_fields', function(event) {
+      event.preventDefault();
+      var selectedMilestone = $(this).closest('.nested-milestones')
+      var new_id = $(this).data('id');
+      var fields = $(this).data('fields');
+      var index = $('.nested-fields').length
+      console.log(fields)
+      fields = fields.replace(/new_goal_action_steps/g, index);
+      fields = fields.replace(/new_action_steps/g, index);
+      selectedMilestone.find('.nested-fields:last').after(fields); // Append new fields after the last nested fields
+      $('form').data('nested-fields-counter', $('.nested-fields').length); // Update counter for unique IDs
+  });
+    $('.add_fields_criteria').unbind('click').bind('click',function(event) {
+    event.preventDefault();
+    var new_id = $(this).data('id');
+    var fields = $(this).data('fields');
+    var index = $('.nested-fields-criteria').length
+    console.log(fields)
+    fields = fields.replace(/new_selection_criteria/g, index);
+    fields = fields.replace(/new_member_selections/g, index);
+    $('.nested-fields-criteria:last').after(fields); // Append new fields after the last nested fields
+    $('form').data('nested-fields-counter', $('.nested-fields-criteria').length); // Update counter for unique IDs
+});
+addFields('add_milestone_fields', 'nested-milestones' )
+function addFields(linkClass, fieldAddClass ){
+   $(`.${linkClass}`).unbind('click').bind('click',function(event) {
+    event.preventDefault();
+    var new_id = $(this).data('id');
+    var fields = $(this).data('fields');
+    var index = $(`.${fieldAddClass}`).length
+    // fields = fields.replace(/new_selection_criteria/g, index);
+    // fields = fields.replace(/new_member_selections/g, index);
+    fields = fields.replace(/new_milestones/g, index);
+    console.log(fields)
+    $(`.${fieldAddClass}:last`).after(fields); // Append new fields after the last nested fields
+    $('form').data('nested-fields-counter', $(`.${fieldAddClass}`).length); // Update counter for unique IDs
+    indexMilestones()
+});
+}
+function indexMilestones(){
+  console.log('index_milestone rann')
+  $('.nested-milestones:not(.hide)').each(function(index) {
+    $(this).find('.heading').text(`Milestone-${index + 1}`);
+    if(index === 0){
+      $(this).find('.remove_milestone').addClass('hide')
+    }
+  });
+}
+$(document).on('click', '.remove_fields', function(event) {
+    event.preventDefault();
+    $(this).prev('input[type=hidden]').val('1'); // Set _destroy to 1 for deletion
+    $(this).closest('.nested-fields').hide();
+    $(this).closest('.nested-fields').find('.form-control').prop('required', false)
+});
+$(document).on('click', '.remove_fields_criteria', function(event) {
+    event.preventDefault();
+    $(this).prev('input[type=hidden]').val('1'); // Set _destroy to 1 for deletion
+    $(this).closest('.nested-fields-criteria').addClass('hide');
+    $(this).closest('.nested-fields-criteria').find('.col-sm-12 .form-control').prop('required', false)
+    sendCriteriaAjax(valueCollector('criteriaType'))
+});
+removeField('remove_milestone', 'nested-milestones')
+stepBulp()
+function stepBulp(){
+  console.log("stepBulb called")
+  "<%var_name = "@" + controller_name.singularize %>"
+  "<%name = instance_variable_get(var_name)%>"
+  if ("<%=name.status%>" === "Draft" && "<%=action_name%>" !="new" ) {
+    $(`.step[data-target="#review-part"]`).addClass('active')
+  } else if ("<%=name.status%>" === "Active") {
+    $(`.step[data-target="#review-part"]`).addClass('active')
+    $(`.step[data-target="#launch-part"]`).addClass('active')
+  }
+}
+function removeField(btnClass, targetClass){
+  $(document).on('click', `.${btnClass}`, function(event) {
+    event.preventDefault();
+    $(this).prev('input[type=hidden]').val('1'); // Set _destroy to 1 for deletion
+    $(this).closest(`.${targetClass}`).addClass('hide');
+    selectedMilestone = $(this).closest(`.${targetClass}`)
+    selectedMilestone.find('.nested-fields').find('.form-control').prop('required', false)
+    indexMilestones()
+  });
+}
+  </script>
+ </body>
+</html>

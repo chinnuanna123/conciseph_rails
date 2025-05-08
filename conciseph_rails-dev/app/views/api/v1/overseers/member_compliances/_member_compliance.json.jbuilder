@@ -1,0 +1,2 @@
+json.member_name user&.name
+json.compliance_status user.medication_adhere_status

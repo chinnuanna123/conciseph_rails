@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  secrete_code: MyString
+  is_free: false
+  no_of_users: 1
+  payment_required: false
+
+two:
+  name: MyString
+  secrete_code: MyString
+  is_free: false
+  no_of_users: 1
+  payment_required: false

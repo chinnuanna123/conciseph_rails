@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Conciseph</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <%= yield %>
+    <script src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        console.log("hhh")
+        stepper = new Stepper($('.bs-stepper')[0])
+      })
+    </script>
+    <script>
+    $(function(){
+      setTimeout( function(){
+        console.log("calleed")
+      $(document).on("click", "a[data-method='delete']", function(e) {
+        e.preventDefault();
+        var link = $(this);
+        var form = $("<form>", {
+          action: link.attr("href"),
+          method: "post"
+        });
+        var hidden = $("<input>", {
+          type: "hidden",
+          name: "_method",
+          value: "delete"
+        });
+        form.append(hidden);
+        form.appendTo("body").submit();
+      });
+      },1000)
+      
+    })
+    
+    </script>
+
+  </body>
+</html>

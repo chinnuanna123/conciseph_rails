@@ -1,0 +1,82 @@
+<tr class="nested-fields-criteria">
+    <div class="row">
+            <td >
+                <div class="col-sm-12 p-0  ">
+                    <div class="form-group">
+                          <%if (params.present? && params[:link_to_id].present?) || (f.object.link_to_id.present?)%>
+                            <%= f.select :criteria_type, options_for_select(MemberSelection.criteria_types.keys.map { |s| [s.titleize,s] },'Pre Selected'), {prompt: 'Select' }, class: 'form-control by-dropdown' , disabled: true ,required: false %>
+                          <%else%>
+                            <%= f.select :criteria_type, MemberSelection.criteria_types.keys.map { |s| [s.titleize,s] }, {prompt: 'Select' }, class: 'form-control by-dropdown' , disabled: local_assigns [:disabled] ,required: true %>
+                          <%end%>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="col-sm-6 col-sm-12 p-0 hide by criteria-val" data-type="Ethnicity">
+                    <div class="form-group">
+                                <%= f.select :criterial_value , User.ethnicities.keys.map { |s| [s.titleize, s] } ,{prompt: 'Select' } ,class: "form-control" ,disabled: local_assigns [:disabled]  %>
+                                    
+                    </div>
+                </div>
+                <div class="col-sm-6 col-sm-12 p-0 hide  by" data-type="Age">
+                    <div class="form-group">
+                            <%= f.select :criteria_sub_type,MemberSelection.criteria_sub_types.keys.map {|s| [s.titleize, s]},{prompt: 'Select' } , class: 'form-control' , disabled: local_assigns [:disabled]%>
+                            
+                
+                    </div>
+                </div>
+                <div class="col-sm-6 col-sm-12 p-0 hide by criteria-val" data-type="Gender">
+                    <div class="form-group">
+                            <%=f.select :criterial_value,User.genders.keys.map { |s| [s.titleize, s] }, {prompt: 'Select' }, class: 'form-control ' , disabled: local_assigns [:disabled]  %>
+                                
+                    </div>
+                </div>
+                <div class="col-sm-6 col-sm-12 p-0 hide by criteria-val" data-type="Specialty">
+                    <div class="form-group">
+                            <%= f.select :criterial_value,User.specialities.keys.map{|s| [s.titleize , s]}, {prompt: 'Select' }, class: 'form-control ' ,disabled: local_assigns [:disabled] %>
+                                
+                    </div>
+                </div>
+                <div class="col-sm-6 col-sm-12 p-0 hide by criteria-val" data-type="Zip Code">
+                    <div class="form-group ">
+                            <%= f.text_field :criterial_value,placeholder: "Enter ZIP Code" , class: 'form-control ' ,disabled: local_assigns [:disabled]  %>
+                                
+                    </div>
+                </div>
+            </td>
+            <td>
+                
+                <div class="col-sm-6 col-sm-12 p-0 hide by age criteria-val" data-type="age-value">
+                    <div class="form-group">
+                            <%=f.number_field :criterial_value, class: 'form-control ' , disabled: local_assigns [:disabled] %>                                
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="col-sm-6 col-sm-12 p-0 hide age by" data-type="range">
+                    <div class="form-group d-flex">
+                        <%=f.number_field :criterial_start_range, placeholder: "1" ,class: 'form-control' , disabled: local_assigns [:disabled] %>
+                        <%= f.number_field :criterial_end_range, placeholder: "100" , class: 'form-control', disabled: local_assigns [:disabled] %>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="col-sm-6 col-sm-12 p-0 hide age by" data-type="age-unit">
+                    <div class="form-group">
+                            <%=f.select :unit, MemberSelection.units.keys.map { |s| [s.titleize, s] }, {prompt: 'Select' }, class: 'form-control' , disabled: local_assigns [:disabled]  %>
+                    </div>
+                </div>
+            </td>
+
+            <td>
+                <div class="col-sm-6 col-sm-12 p-0 ">
+                <%#controller_name == "goals" ? goal = @goal : goal = @announcement%>
+                    <%if !goal.persisted? || action_name=="edit" %>
+
+                        <%= link_to_remove_association_for_criteria raw("<span class='fa fa-trash'></span>"),f %>
+
+                            <%end%>
+                </div>
+            </td>
+    </div>
+</tr>

@@ -1,0 +1,23 @@
+
+
+<div class="col-lg-4 col-md-6">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex no-block">
+                <div class="round align-self-center <%= color %>"><i class="<%= icon %>"></i></div>
+                <div class="m-l-10 align-self-center">
+                <%if show_counter == true%>
+                    <h3 class="m-b-0"><%= count%></h3>
+                <% end %>
+                <h5 class="text-muted <%= show_counter == false ? 'mt-4 mb-4' : 'm-b-0' %>">
+                    <%= title%>
+                    
+                </h5>
+               
+                </div>
+            </div>
+        </div>
+        <a href="<%= link %>" class="hidden-link"></a>
+    </div>
+</div>
+

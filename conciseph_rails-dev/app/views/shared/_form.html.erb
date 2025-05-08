@@ -1,0 +1,496 @@
+
+
+<style> 
+.table th{
+  border-top: none;
+  border-bottom: none !important;
+}
+</style>
+<%= form_with(model: goal, local: true) do |form| %>
+<%name = controller_name.singularize%>
+<%class_name = name.titleize.gsub(" ","")%>
+<%class_object = Object.const_get(class_name)%>
+<% if goal.errors.any? %>
+<div id="error_explanation">
+  <h2>
+    <%= pluralize(goal.errors.count, "error" ) %> prohibited this  <%="#{name}"%> from being saved:
+  </h2>
+  <ul>
+    <% goal.errors.full_messages.each do |message| %>
+    <li>
+      <%= message %>
+    </li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+<%= form.hidden_field :save_to_draft, value: false, id: 'save-to-draft' %>
+<%= form.hidden_field :goal_id, value: goal.goal_id %>
+<%= form.hidden_field :template_id, value: params[:template_id] %>
+<div class="ledger mb-5">
+  <h5 class="ledger-title"> <%="#{name.titleize.gsub("Member Feedback","Feedback / Survey")}"%> </h5>
+  <div class="ledger-content p-4 bg-white shadow-sm rounded">
+    <div class="row">
+      <div class="col-sm-12 col-md-4">
+        <div class="form-group">
+          <%= form.label :section , class: "form-label required" %>
+          <% if class_object.sections.size  > 1%>
+            <%= form.select :section, class_object.sections.keys.map { |s| [s.humanize.titleize, s] }, { prompt: 'Select' },class: 'form-control' ,required: true%>
+          <% else %>
+            <%= form.select :section, class_object.sections.keys.map { |s| [s.humanize.titleize, s] }, { prompt: 'Select', selected: class_object.sections.first[0] },class: 'form-control' ,required: true, readonly: true%>
+          <% end %>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-4">
+        <div class="form-group">
+          <%= form.label :"#{name}_type" , "#{name.titleize.gsub("Member Feedback","Feedback / Survey")} Type",  class: "form-label required" %>
+          <% if class_object.send("#{name}_types").size  > 1%>
+            <%= form.select :"#{name}_type", class_object.send("#{name}_types").keys.map { |s| [s.humanize.titleize, s] }, { prompt: 'Select' },class: 'form-control' ,required: true, readonly: true%>
+          <% else %>
+            <%= form.select :"#{name}_type", class_object.send("#{name}_types").keys.map { |s| [s.humanize.titleize, s] }, { selected: class_object.send("#{name}_types").first[0]  },class: 'form-control' ,required: true, readonly: true%>
+          <% end %>  
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-4">
+        <div class="form-group">
+          <%= form.label :status , class: "form-label required" %>
+          <%= form.select :status, class_object.statuses.keys.map { |s| [s.humanize, s] } , { prompt: 'Select'  } , class: 'form-control',disabled: true%>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-4">
+        <div class="form-group">
+          <%= form.label :"#{name}_category" , "#{name.titleize.gsub("Member Feedback","Feedback / Survey")} Category", class: "form-label required" %>
+          <%unless name == "timely_recovery_goal"%>
+            <%= form.select :"#{name}_category", class_object.send("#{name}_categories").keys.map { |s| [s, s] }, { prompt: 'Select' }, class: 'form-control category' , disabled: disabled  ,required: true%>
+          <%else%>
+            <% if goal.new_record? %>
+              <%value_to_remove = TimelyRecoveryGoal.distinct.pluck(:timely_recovery_goal_category)%>
+              <%all_value = TimelyRecoveryGoal.timely_recovery_goal_categories.keys%>
+              <%options_array = all_value.select{|value|  !value_to_remove.include?(value)}%>
+              <%= form.select :"#{name}_category", options_array.map { |s| [s, s] }, { prompt: 'Select' }, class: 'form-control category' , disabled: disabled  ,required: true%>
+            <% else %>
+              <%= form.text_field :timely_recovery_goal_category ,class: "form-control", disabled: disabled , required: true,  readonly: true %>
+            <% end %>
+          <%end%> 
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-4">
+        <div class="form-group">
+          <%= form.label :name , class: "form-label required" %>
+          <%= form.text_field :name ,class: "form-control" , disabled: disabled ,required: true%>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-4">
+        <div class="form-group">
+          <%= form.label :icon , class: "form-label" %>
+          <%= form.file_field :icon ,class: "form-control"  %>
+        </div>
+          <% if goal.icon.attached? %>
+            <%= form.hidden_field :icon, value: goal.icon.signed_id %>
+            <div class="form-group mt-2">
+              <%= link_to goal.icon.filename.to_s, goal.icon_url, target: 'blank' %>
+            </div>
+          <% end %>
+      </div>
+      <div class="col-sm-12 col-md-12">
+        <div class="form-group">
+          <%= form.label :description , class: "form-label required" %>
+          <%= form.text_area :description ,class: "form-control" , disabled: disabled, rows: 5 ,required: true%>
+        </div>
+      </div>
+      <%unless name == "timely_recovery_goal"%>
+        <div class="col-sm-12 col-md-4">
+          <div class="form-group">
+            <%= form.label :start_date , class: "form-label required" %>
+            <%= form.date_field :start_date, min: Date.today, class: "form-control" , disabled: disabled ,required: true%>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          <div class="form-group">
+            <%= form.label :end_date , class: "form-label required" %>
+            <%= form.date_field :end_date, min: Date.today ,class: "form-control" , disabled: disabled ,required: true%>
+          </div>
+        </div>
+      <%end%>
+    </div>
+  </div>
+</div>
+<%unless name == 'timely_recovery_goal'%>
+<div class="ledger mb-5">
+  <h5 class="ledger-title">Member Selection</h5>
+  <div class="ledger-content p-4 bg-white shadow-sm rounded">
+    <div class="row">
+      <table class="table ">
+        <thead>
+          <tr>
+            <th width="200px" class="required">By</th>
+            <th width="200px" class="required">Criteria</th>
+            <th width="200px">Value</th>
+            <th width="200px">Range</th>
+            <th width="200px">Unit</th>
+            <th width="100px">Action</th>
+          </tr>
+        </thead>
+        <tbody>             
+<%if !params[:link_to_id].present? && form.object.member_selections.last.link_to_id.blank?%>
+          <%= form.fields_for :member_selections do |selection_criterium_form| %>
+          <%=render 'shared/member_selection_fields' , f: selection_criterium_form , disabled: disabled, goal: goal%>
+          <% end %>
+        </tbody>
+      </table>
+      <%if !goal.persisted? || action_name=="edit"%>
+      <%= link_to_add_association_for_criteria raw('<i class="fa fa-plus"></i> Add Criteria') , form, :member_selections, 'shared/member_selection_fields', goal, 'btn btn-sm btn-secondary btn-150 pull-right' %>              
+      <%end%>
+    </div>
+<%else%>
+  <%= form.fields_for :member_selections do |selection_criterium_form| %>
+  <%=render 'shared/member_selection_fields' , f: selection_criterium_form , disabled: disabled, goal: goal%>
+  <%=selection_criterium_form.hidden_field :criteria_type, value: 'Pre Selected'%>
+  <%=selection_criterium_form.hidden_field :link_to_id, value: (params[:link_to_id] || selection_criterium_form.object.link_to_id)%>
+  <%=selection_criterium_form.hidden_field :link_to_type, value: (params[:link_to_type] ||  selection_criterium_form.object.link_to_type)%>
+  <%=selection_criterium_form.hidden_field :milestone_id, value: (params[:milestone_id]  ||  selection_criterium_form.object.milestone_id)%>
+  <%=selection_criterium_form.hidden_field :milestone_status, value: (params[:milestone_status]  ||  selection_criterium_form.object.milestone_status)%>
+  <% end %>
+  </tbody>
+ </table>
+</div>
+<%end%>
+  <div class="row mt-4 text-muted">
+   <span class="hide" id="members-count-wrapper"><a href = "#" id="members-count" ></a> members have been selected as per criteria.</span>
+  </div>
+ 
+  </div>
+  
+</div>
+<% end %>
+
+<h3>Milestones</h3>
+<%=form.fields_for :milestones do |f|%>
+<%=render 'shared/milestones_fields', f: f, goal: goal, disabled: disabled%>
+<%end%>
+<div class="mb-4">
+  <%= link_to_add_association_for_milestones 'Add Milestone' , form, :milestones, 'shared/milestones_fields', goal, 'add_milestone_fields btn btn-sm btn-secondary btn-150' %>
+</div>
+<div class="row mb-4">
+  <div class="col text-right">
+
+      <%if ['Goal', 'HealthEvent', 'HealthEducation', 'Announcement', 'Compliance'].include?(class_name) && ['new','edit'].include?(action_name) %>
+        <%= link_to "Save As Draft", '#', class: "btn btn-outline-secondary btn-lg draft-btn" %>
+      <%end%>
+      <%= link_to raw("Next <i class='fa fa-chevron-right'></i>"), '#', class: "btn btn-outline-secondary btn-lg new-btn", onclick: "submitFormIfValid(this)", data: { disable_with: "Processing..." }, disabled: disabled %>
+  
+  </div>
+</div>
+<% end %>
+
+
+<script>
+  $(function() {
+    //  $('.select2').select2();
+     $('.datatable').DataTable({
+        "ordering": false,  // Disable sorting
+        "searching": false, // Disable searching
+        "paging": false,    // Disable pagination
+        "info": false,
+          borderColor: "#ccc",
+         columnDefs: [
+          {targets: 0,width: "200px"},
+          {targets: 1,width: "150px"},
+          {targets: 2,width: "200px"},
+          {targets: 3,width: "300px"},
+          {targets: 4,width: "300px"},
+          {targets: 5,width: "50px"}
+        ] 
+      });
+  });
+  function submitFormIfValid(button) {
+    event.preventDefault();
+    var form = button.closest('form');
+    if (form.checkValidity()) {
+        form.submit();
+    } else {
+        form.reportValidity();
+    }
+}
+
+function getMembers(criteriaType, selectedCol){
+  if(criteriaType === 'All Members'){
+    arr = valueCollector(criteriaType)
+    sendCriteriaAjax(arr)
+  }
+  if(criteriaType !== 'Age'){
+    $(selectedCol).on('change', function(){
+      criteria_val = criteriaType == 'Zip Code' ? $(this).find('input').val() : $(this).find('select').val()
+      arr = valueCollector(criteriaType)
+      if(criteriaType != 'Age' ){
+        sendCriteriaAjax(arr)
+      }
+      console.log('arr',arr)
+      criteriaVal = $(this).find('select, input').find('select').val()
+      console.log('get_members called criteria_type:',criteriaType == 'Zip Code' ? $(this).find('input').val() : $(this).find('select').val() )     
+    })
+  }else{
+     $(selectedCol).closest(".nested-fields-criteria").find('.col-sm-6[data-type="age-value"], .col-sm-6[data-type="range"] input, .col-sm-6[data-type="age-unit"] select').off('change').on('change', function(){
+
+      arr = valueCollector(criteriaType)
+      sendCriteriaAjax(arr)
+
+    })
+  }
+}
+
+function valueCollector(criteriaType){
+  console.log('value collector called')
+  arr = []
+  $(".nested-fields-criteria:not(.hide)").each(function (index) {
+      let val = $(this).find(".by-dropdown").val()
+      let selector = $(this).find(`.col-sm-6[data-type="${val}"]`);
+      let val2 = val == 'Zip Code' ? selector.find('input').val() : selector.find('select').val()
+      criteriaObj = {
+        'criteria_type': val,
+        'criteria_val': val2
+      }
+      if( val === 'Age'){
+        unit = $(this).find(`.col-sm-6[data-type="age-unit"]`).find('select').val()
+        criteriaObj.unit = unit
+        if(val2 == 'Range'){
+          from =  $(this).find(`.col-sm-6[data-type="range"]`).find('input[type="number"]')[0].value
+          to =  $(this).find(`.col-sm-6[data-type="range"]`).find('input[type="number"]')[1].value
+          console.log('from',from,  'to', to )
+          criteriaObj.from = from
+          criteriaObj.to = to
+        }else{
+          val3 = $(this).find(`.age.by.col-sm-6[data-type="age-value"]`).find('input').val()
+          console.log('val3>>>', val3)
+          criteriaObj.age_value = val3
+        }
+      }
+      arr[index] = criteriaObj
+    })
+    return arr
+}
+
+function sendCriteriaAjax(arr){
+  if('<%= controller_name.singularize %>' === 'timely_recovery_goal')
+    return false;
+
+  $.ajax({
+    url: '/get_members',
+    type: 'GET',
+    data: {
+      'data': JSON.stringify(arr)
+    },
+    dataType: 'script',
+    success: function(res){
+      console.log(res)
+    },
+    error: function(xhr, status, error) {
+        console.error(error);
+    }
+  })
+}
+
+function counterClickBinder(){
+  $('#members-count').unbind('click').bind('click', function(){
+    if('<%=@members_hash.nil?%>' == 'true'){
+      arr =  valueCollector('criteriaType')
+      sendCriteriaAjax(arr)
+    }else{
+      bindPreSelected()
+    }
+  })
+}
+
+function bindPreSelected(){
+  if('<%= controller_name.singularize %>' === 'timely_recovery_goal')
+    return false;
+
+  $(function(){
+    $.ajax({
+      url: '/get_members',
+      type: 'GET',
+      data: {
+        'data': '<%=@members_hash.to_json.html_safe%>'
+      },
+      dataType: 'script',
+      success: function(res){
+        console.log(res)
+      },
+      error: function(xhr, status, error) {
+          console.error(error);
+      }
+    })
+  })
+}
+
+function showCounter(){
+  if('<%=@members_hash.nil?%>' == 'true'){
+      arr =  valueCollector('criteriaType')
+      sendCriteriaAjax(arr)
+    }else{
+      bindPreSelected()
+    }
+}
+  $(function () {
+    bindClicks();
+  
+    $(document).on('click', ".add_fields, .add_fields_criteria, .add_milestone_fields", function () {
+      setTimeout(() => {
+        bindClicks()
+      }, 500);
+    })
+    
+  
+    $(".next-button").unbind('click').bind('click', function () {
+      var nextTarget = $(this).attr('data-next-target')
+      $(`.step`).removeClass('active')
+      $(`.step[data-target='#${nextTarget}']`).addClass('active')
+  
+      $(".content.active.dstepper-block").removeClass('active dstepper-block')
+      $(`#${nextTarget}`).addClass('active dstepper-block')
+    })
+  })
+  
+  function bindClicks() {
+    // console.log('bindclicks>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+    $(".artifact-select").unbind('change').bind('change', function () {
+      let selected = $(this).val()
+      let $tr = $(this).closest(".nested-fields")
+      $tr.find(".artifact-field").addClass('hide');
+  
+      if (selected === 'document') {
+        $tr.find("#artifact-document").removeClass('hide');
+        $tr.find("#artifact-document-icon").removeClass('hide');
+      } else if (selected === 'video') {
+        $tr.find("#artifact-video").removeClass('hide');
+        $tr.find("#artifact-video-icon").removeClass("hide");
+      } else if (selected === 'web_url') {
+        $tr.find("#artifact-web-url").removeClass('hide');
+        $tr.find("#artifact-web-url-icon").removeClass('hide');
+      } else {
+        $tr.find("#nothing-selected").removeClass('hide');       
+  
+      }
+    })
+  
+    $(".by-dropdown").unbind('change').bind('change', function () {
+      let value = $(this).val()
+      let $tr1 = $(this).closest(".nested-fields-criteria")
+      $tr1.find(".col-sm-6.by").addClass('hide');
+      let selectedCol = $tr1.find(`.col-sm-6[data-type="${value}"]`)
+      selectedCol.removeClass('hide')
+      $tr1.find('.col-sm-6.by .form-control').val('').prop({'disabled' : true,'required': false});
+  
+      selectedCol.find('select, input').prop({'disabled': false,'required': true})
+      console.log('>>>>>>>>><<<<<<<<<>>>>>>>>>', value, ':::::::::::::', selectedCol.find('select, input'))
+      if('<%=@members_hash.nil?%>' == 'true'){
+        getMembers(value, selectedCol)
+      }
+      if(value =="Age"){
+          bindClicksAge()
+      }
+      
+    })
+    
+    bindClicksAge()
+    if ("<%=action_name%>" === "edit" || "<%=action_name%>" === "review" || "<%=action_name%>" === "new" ) {
+      showFields()
+    }
+    bindClickCriteriaVal()
+    action_artifact_type()
+    if ('<%=action_name%>' == 'edit' || "<%=action_name%>" === "new" ){
+      $('.action_select').trigger('change')
+      $(".criteria-val:not(.hide) .form-control").trigger('change')
+    }
+    saveAsDraft()
+    counterClickBinder()
+   
+    if(('<%=action_name%>' !== 'new') || ('<%=action_name%>' === 'new' && ('<%=params[:goal_id].present? || params[:link_to_id].present?%>'=== 'true'))){
+      showCounter()
+    }
+  
+  }
+  function bindClicksAge() {
+    $(".col-sm-6[data-type='Age'] select").unbind('change').bind('change', function () {
+      let ageVal = $(this).val()
+      let $tr1 = $(this).closest(".nested-fields-criteria")
+      $tr1.find('.col-sm-6.age.by').addClass('hide');
+      $tr1.find('.col-sm-6.age.by .form-control').val('');
+      $tr1.find(".col-sm-6[data-type='age-unit']").removeClass("hide")
+      $tr1.find(".col-sm-6[data-type='age-unit'] .form-control").prop('disabled', false)
+  
+      if (ageVal === "Range") {
+        $tr1.find(".col-sm-6[data-type='range']").removeClass("hide")
+        $tr1.find('.col-sm-6[data-type="age-value"] input').prop({'disabled': true, 'required': false});
+        $tr1.find(".col-sm-6[data-type='range'] .form-control").prop({'disabled': false, 'required': true})
+  
+      } else if (ageVal && ageVal != "Range") {
+  
+        $tr1.find(`.col-sm-6[data-type="age-value"]`).removeClass("hide")
+        $tr1.find(".col-sm-6[data-type='range'] .form-control").prop({'disabled': true, 'required': false})
+        $tr1.find('.col-sm-6[data-type="age-value"] .form-control').prop({'disabled': false, 'required': true});
+      }
+    })
+  }
+  function bindClickCriteriaVal(){
+    $(".criteria-val .form-control").unbind('change').bind('change', function(){
+      let $tr1 = $(this).closest(".nested-fields-criteria")
+      $tr1.find(".criteria-val .form-control").prop('disabled',true)
+      $(this).prop('disabled',false)
+    })
+  
+  }
+  function showFields() {
+    console.log("showField called");
+    $(".nested-fields-criteria:not(.hide)").each(function () {
+      let val = $(this).find(".by-dropdown").val()
+      let val1 = $(this).find(`.col-sm-6[data-type="${val}"]`);
+      val1.removeClass('hide');
+      val2 = val1.find('select').val()
+  
+      if (val === "Age") {
+        $(this).find(".col-sm-6.age.by").addClass('hide');
+        $(this).find(`.col-sm-6[data-type="age-unit"]`).removeClass("hide")
+        if (val2 == "Range") {
+  
+          $(this).find(`.col-sm-6[data-type="range"]`).removeClass("hide")
+  
+        } else if (val2 && val2 != "Range") {
+  
+          $(this).find(`.col-sm-6[data-type="age-value"]`).removeClass("hide")
+        }
+      }
+    })
+  }
+  function action_artifact_type(){
+    $('.action_select').unbind('change').bind('change', function(){
+      val = $(this).val()
+      console.log(val)
+      let $tr = $(this).closest('.nested-fields')
+      $tr.find(".artifact-select, .artifact-field").prop('disabled', false);
+  
+      if (val === 'Display Flyer') {
+        $tr.find(".artifact-select").val('document');
+      } else if (val === 'Play Video') {
+       $tr.find(".artifact-select").val('video');
+      } else if (val === 'Launch External Website or Link') {
+       $tr.find(".artifact-select").val('web_url');
+      } else {
+        $tr.find(".artifact-select").val('');
+  
+      }
+        $tr.find(".artifact-select").prop('disabled', true);
+      $('.artifact-select').trigger('change')
+    })
+  }
+  
+  function saveAsDraft(){
+    $('.draft-btn').unbind('click').bind('click', function(event){
+      event.preventDefault()
+      
+      $('#save-to-draft').val('true')
+      $(this).closest('form').find('.new-btn').click()
+      $('#save-to-draft').val('false')
+    })
+  }
+</script>

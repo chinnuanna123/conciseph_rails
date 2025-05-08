@@ -1,0 +1,145 @@
+<div class="content-wrapper">
+ <div class="content-header">
+   <div class="container-fluid">
+     <div class="row mb-2">
+       <div class="col-sm-6">
+         <h1 class="m-0 text-dark">Feedbacks</h1>
+       </div><!-- /.col -->
+       <div class="col-sm-6">
+         <ol class="breadcrumb float-sm-right">
+           <li class="breadcrumb-item"><a href="<%= root_path%>">Home</a></li>
+           <li class="breadcrumb-item active">Feedbacks</li>
+         </ol>
+       </div>
+     </div>
+   </div>
+ </div>
+
+ <section class="content">
+   <div class="container-fluid">
+      <div class="row d-flex justify-content-center">
+       <div class="col-lg-4 col-6">
+         <div class="small-box bg-info">
+           <div class="inner">
+             <h3>80000</h3>
+             <p>Provider </p>
+           </div>
+           <div class="icon">
+             <i class="ion ion-bag"></i>
+           </div>
+         </div>
+       </div>
+       <div class="col-lg-4 col-6">
+         <div class="small-box bg-success">
+           <div class="inner">
+            <h3><%= 101000 - 80000%></h3>
+             <p>General</p>
+           </div>
+           <div class="icon">
+             <i class="ion ion-stats-bars"></i>
+           </div>
+         </div>
+       </div>
+       <div class="col-lg-4 col-6">
+         <div class="small-box bg-warning">
+           <div class="inner">
+             <h3>&nbsp;</h3>
+             <p>Create Feedback</p>
+           </div>
+           <div class="icon">
+             <i class="ion ion-person-add"></i>
+           </div>
+         </div>
+       </div>
+     </div>
+     <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+           <div class="card-body table-responsive p-0">
+              <table class="table table-striped table-valign-middle">
+                <thead>
+                    <tr>
+                      <th>Member Name</th>
+                      <th>Type</th>
+                      <th>Ratings</th>
+                      <th>Comment</th>
+                      <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <% provider_comments = ["The doctor was very thorough and took the time to listen to all of my concerns.",
+                "I felt very comfortable with the doctor and appreciated their caring and compassionate demeanor.",
+                "The doctor was very knowledgeable and provided me with clear explanations of my condition and treatment options.",
+                "I appreciated how the doctor took a holistic approach to my health and considered all aspects of my well-being.",
+                "The doctor was very professional and made me feel like I was in good hands.",
+                "I was impressed with how the doctor was able to diagnose my condition quickly and accurately.",
+                "The doctor was very patient and took the time to answer all of my questions.",
+                "I appreciated how the doctor worked with me to create a treatment plan that suited my needs and preferences.",
+                "The doctor had a great bedside manner and made me feel at ease during my appointment.",
+                "I felt like the doctor really cared about my well-being and was invested in helping me improve my health.",
+                "The doctor was very thorough in their follow-up and made sure I was on the right track with my treatment.",
+                "I appreciated how the doctor was able to provide me with personalized care that took into account my unique health history.",
+                "The doctor had a great sense of empathy and was able to understand what I was going through.",
+                "I was impressed with how the doctor was able to explain complex medical concepts in a way that was easy for me to understand.",
+                "The doctor was very approachable and made me feel like I could ask them anything.",
+                "I appreciated how the doctor was able to work with my other healthcare providers to provide me with comprehensive care.",
+                "The doctor was very supportive and provided me with the resources I needed to manage my condition effectively.",
+                "I felt like the doctor was a partner in my healthcare journey and was committed to helping me achieve my health goals.",
+                "The doctor was very thorough in their assessment and was able to catch a potential health issue early on.",
+                "I appreciated how the doctor was able to provide me with practical advice and strategies for managing my condition on a day-to-day basis."]%>
+                <% general_comment = [
+"Health insurance provides access to essential medical care and services that can improve your health and wellbeing.",
+"It helps you manage the costs of medical care, which can be expensive and overwhelming.",
+"Health insurance gives you the freedom to choose healthcare providers and facilities that meet your needs and preferences.",
+"It offers protection against unexpected medical expenses and financial hardship.",
+"Health insurance can cover a wide range of medical treatments, from routine checkups to life-saving procedures.",
+"It allows you to receive preventative care, which can help identify health problems early on and prevent serious illness.",
+"Health insurance can provide access to mental health services, which are often overlooked but critical to overall wellbeing.",
+"It gives you peace of mind, knowing that you have coverage for medical emergencies and unexpected health issues.",
+"Health insurance can help you manage chronic conditions and maintain your health over time.",
+"It offers a range of plans and options to fit your unique needs and budget.",
+"Health insurance can provide access to prescription medications and other essential medical supplies.",
+"It can help you maintain your financial stability, by preventing high medical bills from causing financial hardship.",
+"Health insurance plans may offer additional benefits, such as dental or vision coverage, wellness programs, or alternative therapies.",
+"It can provide coverage for maternity care, which can be a significant expense for families.",
+"Health insurance can provide access to specialized care and treatment for complex medical conditions.",
+"It offers protection against unexpected medical bills, which can be a significant burden on individuals and families",
+
+"Health insurance can provide access to telemedicine services, which can be particularly helpful for individuals who live in remote or underserved areas.",
+"It can help you maintain your independence and quality of life, by providing access to medical care and treatment.",
+"Health insurance can provide peace of mind for you and your family, knowing that you have access to the care and support you need.",
+"It can provide access to a wide range of medical professionals, including primary care doctors, specialists, and nurses, who can help you manage your health and wellbeing."
+                ]%>
+                  <% 100.times do |index| %>
+                  <% date = rand(1.months.ago..Time.now)%>
+                  <% types = ["Provider", "General"].sample%>
+                  
+                   <tr>
+                    <td>
+                      <%= fake_user_name  %>
+                    </td>
+                    <td>
+                       <%= types %>
+                    </td>
+                    <td>
+                       <i class="fa fa-star text-warning" aria-hidden="true"></i> <%= rand(3..5)%>
+                    </td>
+                    
+                    <td>
+                       <%= types == "Provider" ? provider_comments.sample : general_comment.sample %>
+                    </td>
+                    <td>
+                      <%= rand(1.weeks.ago..Time.now).strftime('%A, %d %b %Y %l:%M %p')%>
+                    </td>
+                    
+                   </tr>
+                   <% end %>
+                </tbody>
+              </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ </section>
+</div>

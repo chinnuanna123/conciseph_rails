@@ -1,0 +1,2 @@
+member_id,name,email,phone,birth_date,gender,ethnicity,address,city,state,zip_code
+1,user_name  ,user_email@gmail.com,1234567890,DD/MM/YYYY format only,male,latino,"fl-no-A-1 , society_name,street_name",pune,maharashtra,411011

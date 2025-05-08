@@ -1,0 +1,21 @@
+<table class="table">
+    <thead>
+        <tr>
+        <th style="width: 10px">Email</th>
+        <th>Ratings</th>
+        <th>Message</th>
+        <th>Created_at</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @feedbacks.each do |feedback|%>
+            <tr>
+                <td><%= feedback.user.email%></td>
+                <td><%= feedback.ratings%></td>
+                <td><%= feedback.message%></td>
+                <td><%= feedback.created_at.strftime('%A, %d %b %Y %l:%M %p') %></td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
+<%= render partial: "/shared/pagination", locals: {objekt: @feedbacks}%>

@@ -1,0 +1,41 @@
+<table class="table table-responsive table-striped">
+    <thead>
+        <tr>
+        <th>Name</th>
+        <th>Enrollment By</th>
+        <th>Primary User</th>
+        <th width="150px">Phone No</th>
+        <th style="width: 10px">Email ID</th>
+        <th>Age</th>
+        <th>Gender</th>
+        <th>Gender on Birth Certificate</th>
+        <th>Preferred Language</th>
+        <th>Cultural Preference</th>
+        <th>Zip Code</th>
+        <th>Reporting Date</th>
+        <th>Enrollment Date</th>
+        <th>Last Intervention DateTime</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @users.each do |user|%>
+            <tr>
+                <td><%= user&.name&.titleize%></td>
+                <td><%= "text"%></td>
+                <td><%= user.family_head_id.nil? ? 'Yes' : 'No'%></td>
+                <td><%= user&.phone%></td>
+                <td><%= user&.email%></td>
+                <td><%= user.age%></td>
+                <td><%= blank_if_na(user.gender)%></td>
+                <td><%= blank_if_na(user.gender_on_birth_certificates)%></td>
+                <td><%= blank_if_na(user.preferred_language)%></td>
+                <td><%= blank_if_na(user.ethnicity)%></td>
+                <td><%= user&.zip_code%></td>
+                <td><%= user&.age_updated_at&.strftime("%Y-%m-%d") %></td>
+                <td><%= user&.created_at.strftime("%Y-%m-%d")%></td>
+                <td><%= user&.last_seen_at&.strftime("%Y-%m-%d %H:%M:%S")%></td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
+<%= render partial: "/shared/pagination", locals: {objekt: @users}%>

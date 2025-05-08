@@ -1,0 +1,346 @@
+
+<%model_name = controller_name.singularize%>  
+<div class="content-wrapper">
+    <div class="content-header">
+       <div class="container-fluid">
+          <div class="row mb-2">
+             <div class="col-sm-6">
+                <h1 class="m-0 text-dark"><%=@header%> Details</h1>
+             </div>
+             <!-- /.col -->
+             <%outreach_hash = @user_actions.group(:status).count%>
+             <%outreach_hash.default = 0%>
+             <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                   <li class="breadcrumb-item"><a href="<%= root_path%>">Home</a></li>
+                   <li class="breadcrumb-item active"><%=@header%> Details</li>
+                </ol>
+             </div>
+          </div>
+       </div>
+    </div>
+    <section class="content">
+       <div class="card">
+          <div class="card-body">
+             <div class="row">
+                <div class="col-12 col-md-6 col-lg-6">
+                   <h3 class="text-primary"><i class="fas fa-paint-brush"></i> <%=model.name%></h3>
+                   <br/>
+
+                </div>
+                <div class="col-12 col-md-12 col-lg-12 ">
+                   <div class="row">
+                      <div class="col-8">
+                         <div>
+                            <canvas id="milestones" height="215px"></canvas>
+                         </div>
+                         <div class="text-center hide">
+                             <b>Milestone Completion</b>
+                         </div>
+                      </div>
+                      
+                      <div class="col-2">
+                         <div >
+                            <canvas id="outreach" height="215px"></canvas>
+                         </div>
+                         <div class="text-center ">
+                             <b>Outreach Success</b>
+                         </div>
+                      </div>
+                      <div class="col-2">
+                         <div>
+                            <canvas id="completion" height="215px"></canvas>
+                         </div>
+                         <div class="text-center">
+                             <b>Completion Success</b>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </div>
+    </section>
+    <section class="content">
+       <div class="container-fluid">
+         <div class="row select-info-cont hide">
+         <div class="">
+          <div class="card ">
+            <div class="card-body text-center">
+            <span id='selection-info' class="text-center text-muted">
+
+            </span>
+              <%= link_to "click here", send("new_#{params[:controller].singularize}_path" ) , class: 'by-goal provider-name-td'%>
+            </div>
+          </div>
+         </div>
+         </div>
+          <div class="row">
+             <div class="col-lg-12">
+                <div class="card">
+                   <div class="card-body table-responsive p-0">
+                      <table class="table table-striped table-valign-middle" id= "my-table">
+                         <thead>
+                            <tr>
+                               <th>Member Name</th>
+                               <th>Status</th>
+                               <th>Acknowledge At</th>
+                               <th>Last Action Taken</th>
+                            </tr>
+                         </thead>
+                         <tbody id="listing">
+                       
+                         </tbody>
+                      </table>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </div>
+    </section>
+ <%outreach_percent = (@user_actions.present? ? @user_actions.where.not(acknowledge_at: nil).count.to_f*100/(@user_actions.count): 0).round(2)%>
+ </div>
+ 
+ 
+ <script>
+ $(function(){
+  $('#listing').html('<%=escape_javascript(render 'shared/show_listing', user_actions: @user_actions)%>')
+  openModalForGraphClick()
+  // milestone graph
+  const milestones_chart = document.getElementById('milestones');
+  const milestone_data = JSON.parse('<%=@milestone_data.to_json.html_safe%>');
+  console.log(milestone_data)
+  setMileStoneChart(milestones_chart, milestone_data)
+
+  // outreach and completion graph
+  const outreach_and_completion_data = JSON.parse('<%= @outreach_and_completion_data.to_json.html_safe%>')
+  setOutreachChart(outreach_and_completion_data)
+  setCompletionChart(outreach_and_completion_data)
+  console.log(outreach_and_completion_data)
+ })
+  // setOutreachChart
+function setOutreachChart(outreach_and_completion_data){
+  const ctx = document.getElementById('outreach');
+    const data = {
+    labels: [
+        `Outreach (${outreach_and_completion_data.outreach_percentage})%`
+    ],
+    indexLabelPlacement: "bottom",
+    datasets: [{
+        label: 'Dataset',
+        data: outreach_and_completion_data.outreach,
+        backgroundColor: [
+            'rgb(105,168,79)',
+            'rgb(183,183,183)'
+        ],
+        hoverOffset: 4,
+        responsive: true,
+        maintainAspectRatio: false
+    }]
+    };
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: data}
+    );
+}
+
+//setCompletionChart
+
+function setCompletionChart(outreach_and_completion_data){
+  const completion_chart = document.getElementById('completion');
+  const c_data = {
+      labels: [
+          `Completion Rate (${outreach_and_completion_data.completion_percentage})%`,          
+      ],
+      indexLabelPlacement: "bottom",
+      datasets: [{
+          label: 'Datasets',
+          data: outreach_and_completion_data.completion,
+          backgroundColor: [
+              'rgb(105,168,79)',
+              'rgb(183,183,183)',
+              'rgb(150,150,150)'
+          ],
+          hoverOffset: 4,
+          responsive: true,
+          maintainAspectRatio: false
+      }]
+  };
+  new Chart(completion_chart, {
+        type: 'doughnut',
+        data: c_data}
+    );
+}
+      
+      ///___________
+    
+
+    // dataTable
+    $(document).ready( function () {
+      if($('#my-table tbody tr.no-records').length === 0){
+        const table = $('#my-table').DataTable({
+          "ordering": false,  // Disable sorting
+            "searching": false, // Disable searching
+            "paging": false,    // Disable pagination
+            "info": false,
+            // dom: 'Bfrtip',
+            // buttons: [
+            //     {
+            //         extend: 'csvHtml5',
+            //         text: 'CSV export',
+            //         className: 'btn btn-dark  float-right',
+            //         exportOptions: {
+            //             modifier: {
+            //                 search: 'none'
+            //             }
+            //         }
+            //     }
+            // ]
+        });   
+      }
+      
+    });
+
+function bindGraphClick(milestone_id, label){
+  var status = 0
+  if(label == 'Completed'){
+    status = 2
+  }
+  else if(label === 'In Progress'){
+    status = 1
+  }
+  $('.select-info-cont').removeClass('hide')
+  var currentUrl = $('.by-goal').attr('href')
+  var params = {
+        by_goal: true,
+        milestone_id: milestone_id,
+        milestone_status: status,
+        link_to_id: '<%=params[:id]%>',
+        link_to_type: '<%=model_name.camelcase%>'
+      };
+  var newUrl = currentUrl.split('?')[0] + '?' + $.param(params);
+  $('.by-goal').attr('href', newUrl)
+
+}
+
+function changeText(label, datasetLabel){
+  $('#selection-info').html(`You are viewing members who have <strong class="text-black">${datasetLabel.includes('Completed') ? 'Completed' : 'Not completed'}</strong> the <strong class="text-black">${label}</strong>. To create goals for these members, please `)
+}
+function openModalForGraphClick(){
+  $('.by-goal').unbind('click').bind('click', function(event){
+    event.preventDefault()
+    link = $('.by-goal').attr('href')
+    var $modal = $("#modal-default");
+    $modal.find("#data-to-append").html('<%= escape_javascript(render partial: "shared/show_options") %>');
+    $modal.find("#data-to-append").addClass('shadow-none d-flex justify-content-center align-items-center')
+  })
+}
+
+
+
+function setMileStoneChart(milestone_id, data){
+//  result = { name: [], completed:[], incompleted: [], chart_labels: [],milestone_ids: }
+
+  const config = {
+      type: 'bar',  
+      data: {
+        labels: data['name'],
+        datasets: [
+          {
+            label: 'Completed',
+            data:  data['completed'],                  
+            backgroundColor: 'rgb(105,168,79)'
+            
+          },
+          {
+            label: 'In Progress',
+            data: data['in_progress'],
+            backgroundColor: 'rgb(183,183,183)'
+          
+          },
+          {
+            label: 'Not Started',
+            data: data['not_started'],
+            backgroundColor: 'rgb(245, 245, 220)'
+         
+          }
+          
+        ]
+      },
+      plugins: [ChartDataLabels],
+      options: {
+        plugins: {
+          title: {
+            display: false,
+            text: 'Milestone Completion'
+          },
+        datalabels: {
+          color: '#333333', 
+          formatter: (value, context) => {
+              const categoryIndex = context.dataIndex;
+              const segmentIndex = context.datasetIndex;
+              let displayValue = data['chart_labels'][categoryIndex][segmentIndex];
+              return (displayValue > 0)? displayValue : '';
+          }, 
+        }
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        barPercentage: 0.5,
+        categoryPercentage: 0.5,
+        scales: {
+          x: {
+            stacked: true,
+            grid: {
+              display: false,
+            }
+          },
+          y: {
+            stacked: true,
+            ticks: {
+                    stepSize: 40
+                },
+            grid: {
+              display: false
+            }
+          }
+        },
+      onClick: (event, elements, chart) => {
+        const points = chart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, false);
+        if (points.length) {
+          const firstPoint = points[0];
+          const payload = {
+            label: chart.data.labels[firstPoint.index],
+            datasetLabel: chart.data.datasets[firstPoint.datasetIndex].label,
+            value: chart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index],
+            milestone_id: data['milestone_ids'][firstPoint.index]
+          }
+
+          bindGraphClick(payload['milestone_id'], payload['datasetLabel'])
+          changeText(payload['label'], payload['datasetLabel'])
+          url = '/<%=params[:controller]%>/<%=params[:id]%>'
+          fetchData(url, payload)
+        }
+      }
+      }
+  };
+
+  new Chart(milestone_id, config);
+}
+
+function fetchData(url, payload){
+  $.ajax({
+    url: url, 
+    method: 'GET',
+    data: payload,
+    dataType: 'script',
+    success: function(response){
+      
+    },
+    error: function(xhr, status, error){
+      console.log(error)
+    }
+  })
+}
+ </script>
+ 

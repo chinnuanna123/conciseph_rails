@@ -1,0 +1,28 @@
+<%= render partial: "/shared/pagination", locals: {objekt: medications}%>
+<table class="table table-striped">
+    <thead>
+        <tr>
+        <th>Name</th>
+        <th>Medication</th>
+        <th>Status</th>
+        <th>Total Dosages</th>
+        <th>Completed</th>
+        <th>Remaining</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% medications.each_with_index do |medication, index|%>
+          <%user = medication.user%>
+          <%status = medication.status%>
+            <tr>
+                <td><%= user.name%></td>
+                <td><%="Medication_#{medication.id}" %></td>
+                <td><%= status%></td>
+                <td><%= total_dosages = medication.medication_timing_count || 0%></td>
+                <td><%= completed = medication.send("Not Started?") ? 0 : medication.medication_timings.where.not(taken_at: nil).count%></td>
+                <td><%= total_dosages - completed%></td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
+<%= render partial: "/shared/pagination", locals: {objekt: medications}%>

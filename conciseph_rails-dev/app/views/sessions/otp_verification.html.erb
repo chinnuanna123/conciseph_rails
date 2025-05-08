@@ -1,0 +1,95 @@
+<div class="login-logo">
+	<img  src="/assets/logo.png" alt="Concise PH Logo" width="70px" height="70px">
+   <a href="https://www.conciseph.com/" class="logo-txt" style=""><b>Concise</b>PH</a>
+</div>
+<div class="card shadow-lg otp-verification-card">
+  <div class="card-body login-card-body">
+
+    <% if flash.present? %>
+      <% flash.each do |key, value| %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <%= value %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <% end %>
+    <% end %>
+
+    <h2 class="text-center mb-4">OTP Verification</h2>
+    <p class="text-muted">Please enter the OTP sent to your email to verify your identity.</p>
+
+    <%= form_with url: verify_otp_path, method: :post, html: { class: "needs-validation" } do |form| %>
+      <div class="row mb-3 align-items-center">
+        <div class="col-md-12">
+          <%= form.label :otp, "Enter the OTP", class: "form-label hide" %>
+          <%= form.text_field :otp, class: "form-control otp-input", placeholder: "Enter 6 digit OTP", required: true %>
+          <p class="text-muted mt-1 mb-0" style="font-size: 0.9rem;">The OTP will be valid for 5 minutes.</p>
+
+        </div>
+        
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <%= form.submit "Verify OTP", class: "btn btn-primary btn-block" %>
+        </div>
+        <div class="col-md-12  pr-0 mt-1">
+         <span class="text-muted">Didn't receive OTP? </span><%= link_to "Resend it", resend_otp_path, class: "btn btn-link resend-otp-link" %>
+        </div>
+      </div>
+    <% end %>
+
+    <hr class="mt-4 mb-4">
+
+    <div class="text-center">
+      <%= link_to "Sign in with different email", destroy_user_session_path, class: "btn btn-link log-out-form", id: "log-out-form" , data: { method: "delete", confirm: "Are you sure you want to log out?" } %>
+      
+      <%=button_to "Log Out",  destroy_user_session_path, method: :delete, data: { confirm: "Are you sure?" },id:'log-out' ,class: "btn btn-danger hide log-out" %>
+
+
+    </div>
+  </div>
+</div>
+
+<style>
+  .otp-verification-card {
+    max-width: 500px;
+    border-radius: 10px;
+    background: #f8f9fa;
+  }
+
+  .login-box-msg {
+    font-size: 1.25rem;
+    margin-bottom: 20px;
+  }
+
+  .otp-input {
+    font-size: 1.1rem;
+  }
+
+  .resend-otp-link {
+    color: #007bff;
+    text-decoration: underline;
+    padding: 0;
+    border: none;
+  }
+
+  .resend-otp-link:hover {
+    text-decoration: underline;
+  }
+
+  .btn-outline-danger {
+    font-size: 0.9rem;
+  }
+
+  hr {
+    border: 1px solid #dee2e6;
+  }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('log-out-form').addEventListener('click', (event) => {
+    event.preventDefault();
+    document.getElementById('log-out').click();
+  });
+});
+</script>

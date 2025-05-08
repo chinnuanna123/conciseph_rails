@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <title>Admin</title>
+   <%= csrf_meta_tags %>
+   <%= csp_meta_tag %>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+   <%= stylesheet_link_tag '/assets/admin', media: 'all', 'data-turbolinks-track': 'reload' %>
+   <%= javascript_pack_tag 'admin', 'data-turbolinks-track': 'reload' %>
+   <%#= javascript_include_tag 'rails-ujs' %>
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ti-icons@0.1.2/css/themify-icons.min.css">
+   <script src="https://kit.fontawesome.com/6d90f39943.js"></script>
+   <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
+  <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+ </head>
+<style>
+  .required:after{
+      width: 500px;
+      content:"*";
+      color:red;
+    }
+</style>
+ <body class="hold-transition sidebar-mini layout-fixed">
+   <div class="wrapper">
+     <%#= render "layouts/admin_nav" %>
+     <%= render "/shared/admin_side_nav" %>
+     <%= yield %>
+     <!-- modal -->
+     <div class="modal fade hide" id="modal-default" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="card border-0 shadow-none height-100" id="data-to-append">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary close-modal pull-right">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-backdrop fade hide" style="display: none"></div>
+    <!-- footer -->
+     <%= render "/shared/admin_footer" %>
+   </div>
+   <script>
+     $(function(){
+      // setTimeout( function(){
+        console.log("calleed")
+      $(document).on("click", "a[data-method='delete']", function(e) {
+        e.preventDefault();
+        var link = $(this);
+        var form = $("<form>", {
+          action: link.attr("href"),
+          method: "post"
+        });
+        var hidden = $("<input>", {
+          type: "hidden",
+          name: "_method",
+          value: "delete"
+        });
+        form.append(hidden);
+        form.appendTo("body").submit();
+      });
+      // },1000)
+      
+    })
+   </script>
+   <script>
+    $(function(){
+      $(document).on('click', '.modal-header .close, .modal-footer .close-modal', function() {
+      hideModal();
+    });
+
+    $(document).on('click', '.provider-name-td', function(e) {
+      e.preventDefault();
+      showModal();
+    });
+     function showModal(){
+      console.log('show-modal')
+         $("#modal-default, .modal-backdrop").removeClass('hide').addClass('show')
+          .attr('role', 'dialog')
+          .css('display', 'block')
+     }
+
+     function hideModal(){
+           $("#data-to-append").html('')
+          $("#modal-default, .modal-backdrop").addClass('hide').removeClass('show')
+          .removeAttr('role')
+          .css('display', 'none')
+          
+     }
+    })
+
+    $(function(){
+    indexMilestones()
+  })
+    $(document).on('click', '.add_fields', function(event) {
+      event.preventDefault();
+      var selectedMilestone = $(this).closest('.nested-milestones')
+      var new_id = $(this).data('id');
+      var fields = $(this).data('fields');
+      var index = $('.nested-fields').length
+      console.log(fields)
+      fields = fields.replace(/new_goal_action_steps/g, index);
+      fields = fields.replace(/new_action_steps/g, index);
+      selectedMilestone.find('.nested-fields:last').after(fields); // Append new fields after the last nested fields
+      $('form').data('nested-fields-counter', $('.nested-fields').length); // Update counter for unique IDs
+  });
+addFields('add_milestone_fields', 'nested-milestones' )
+function addFields(linkClass, fieldAddClass ){
+   $(`.${linkClass}`).unbind('click').bind('click',function(event) {
+    event.preventDefault();
+    var new_id = $(this).data('id');
+    var fields = $(this).data('fields');
+    var index = $(`.${fieldAddClass}`).length
+    // fields = fields.replace(/new_selection_criteria/g, index);
+    // fields = fields.replace(/new_member_selections/g, index);
+    fields = fields.replace(/new_milestones/g, index);
+    console.log(fields)
+    $(`.${fieldAddClass}:last`).after(fields); // Append new fields after the last nested fields
+    $('form').data('nested-fields-counter', $(`.${fieldAddClass}`).length); // Update counter for unique IDs
+    indexMilestones()
+});
+}
+function indexMilestones(){
+  $('.nested-milestones:not(.hide)').each(function(index) {
+    $(this).find('.heading').text(`Milestone-${index + 1}`);
+    if(index === 0){
+      $(this).find('.remove_milestone').addClass('hide')
+    }
+  });
+}
+$(document).on('click', '.remove_fields', function(event) {
+    event.preventDefault();
+    $(this).prev('input[type=hidden]').val('1'); // Set _destroy to 1 for deletion
+    $(this).closest('.nested-fields').hide();
+    $(this).closest('.nested-fields').find('.form-control').prop('required', false)
+});
+$(document).on('click', '.remove_fields_criteria', function(event) {
+    event.preventDefault();
+    $(this).prev('input[type=hidden]').val('1'); // Set _destroy to 1 for deletion
+    $(this).closest('.nested-fields-criteria').hide();
+    $(this).closest('.nested-fields-criteria').find('.col-sm-12 .form-control').prop('required', false)
+});
+removeField('remove_milestone', 'nested-milestones')
+function removeField(btnClass, targetClass){
+  $(document).on('click', `.${btnClass}`, function(event) {
+    event.preventDefault();
+    $(this).prev('input[type=hidden]').val('1'); // Set _destroy to 1 for deletion
+    $(this).closest(`.${targetClass}`).addClass('hide');
+    $(this).closest('.nested-fields').find('.form-control').prop('required', false)
+    indexMilestones()
+  });
+}
+</script>
+ </body>
+</html>

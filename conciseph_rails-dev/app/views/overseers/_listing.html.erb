@@ -1,0 +1,21 @@
+<%= render partial: "/shared/pagination", locals: {objekt: @overseers}%>
+ <% @overseers.each do |overseer| %>
+    <tr>
+      <td><%= overseer.name %></td>
+      <td><%= overseer.email %></td>
+      <td><%= format_date_time(overseer.created_at) %></td>
+      <td>
+        <%= link_to edit_overseer_path(overseer) do %>
+          <i class="fas fa-edit pl-2 pr-2"></i>
+        <%end%>
+      </td>
+      <td>
+        <%= link_to overseer, method: :delete, data: { confirm: 'Are you sure?' } do %>
+          <i class="fa fa-trash"></i>
+        <%end%>
+      </td>
+      <td>
+        <%= link_to "Api Logs", api_logs_path(overseer) %>
+      </td>
+    </tr>
+  <% end %>

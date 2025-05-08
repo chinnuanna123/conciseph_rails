@@ -1,0 +1,33 @@
+<%if users.present?%>
+<%=render partial: "/shared/pagination", locals: {objekt: users}%>
+<%end%>
+<table class="table table-striped">
+    <thead>
+        <tr>
+        <th>Member Name</th>
+        <th>Member Medication Status</th>
+        <th>Total Medications</th>
+        <th>No Of Non Adherence Medications</th>
+        <th>Latest Activity Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <%if users.present?%>
+          <% users.each do |user|%>
+              <%adhere_hash = user.medications&.group(:status)&.count%>
+              <tr>
+                  <td><%= user.name%></td>
+                  <td><%= user.medication_adhere_status%></td>
+                  <td><%=adhere_hash&.values&.sum%></td>
+                  <td><%=adhere_hash['Non Adherence'] || 0%></td>
+                  <td><%=MedicationTiming.where(medication_id: Medication.where(user_id: user)).where.not(taken_at: nil).last&.taken_at || "-"%></td>
+              </tr>
+          <% end %>
+        <%else%>
+              <tr><td colspan=12 class="text-center">No data </td></tr>
+        <%end%>
+    </tbody>
+</table>
+<%if users.present?%>
+<%=render partial: "/shared/pagination", locals: {objekt: users}%>
+<%end%>

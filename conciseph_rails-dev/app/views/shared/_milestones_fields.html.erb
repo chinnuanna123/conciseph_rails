@@ -1,0 +1,35 @@
+<div class="ledger mb-3 nested-milestones">
+  <h5 class="ledger-title">
+      <span class="heading">Milestone</span> 
+      <%if !goal.persisted? || action_name=="edit" %>
+        <span class='ml-auto pull-right '><%= link_to_remove_association_for_milestone raw("<span class='fa fa-trash text-white'></span>"),f, 'remove_milestone' %></span>
+      <%end%>
+  </h5>
+  <div class="ledger-content p-4 bg-white shadow-sm rounded">
+     <div class="row">
+        <table class="table datatable">
+          <thead>
+            <tr>
+              <th width="200px" class="required">Name</th>
+              <th width="200px" class="required">Action</th>
+              <th width="200px" class="required">Interaction</th>
+              <th width="300px" class="required">Message</th>
+              <th width="300px">Artifact</th>
+              <th width="100px">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%= f.fields_for :action_steps, (action_name == 'edit' && !f.object.action_steps.last.new_record? && f.object.action_steps.with_relevant_attachment.order('created_at ASC')) do |action_step_form| %>
+        
+              <%= render 'shared/action_step_fields' , f: action_step_form ,disabled: disabled, goal: goal%>
+                
+            <% end %>
+                
+          </tbody>
+        </table>
+          <%if !goal.persisted? || action_name=="edit"%>
+            <%= link_to_add_association raw('<i class="fa fa-plus"></i> Add Step') , f, :action_steps, 'shared/action_step_fields', goal, 'btn btn-sm btn-secondary btn-150' %>
+          <%end%>
+      </div>
+  </div>
+</div>

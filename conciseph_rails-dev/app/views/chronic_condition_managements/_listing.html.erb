@@ -1,0 +1,31 @@
+<table class="table table-responsive table-striped">
+    <thead>
+        <tr>
+        <th>Member Name</th>
+        <th>Diagnosis</th>
+        <th>Symptoms</th>
+        <th>Medications</th>
+        <th>Documents</th>
+        <th>Health Education Completed</th>
+        <th>Health Events Published</th>
+        <th>Feedback/Surveys Completed</th>
+        <th>Last Checked By</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @users.each do |user|%>
+            <tr>
+                <td><%= user.name%></td>
+                <td><%="diagnosis" %></td>
+                <td><%= 'Symptoms'%></td>
+                <td><%= user.medications.count%></td>
+                <td><%= "documents"%></td>
+                <td><%=user.user_actions.select{|ua| ua.actionable_type == 'HealthEducation' && ua.status == 'Completed' }.count %></td>
+                <td><%=user.user_actions.select{|ua| ua.actionable_type == 'HealthEvent' }.count%></td>
+                <td><%=user.user_actions.select{|ua| ua.actionable_type == 'MemberFeedback' && ua.status == 'Completed' }.count%></td>
+                <td><%=user.last_seen_at&.strftime('%d/%m/%y %H:%M %p') %></td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
+<%= render partial: "/shared/pagination", locals: {objekt: @users}%>

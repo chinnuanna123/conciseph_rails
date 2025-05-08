@@ -1,0 +1,33 @@
+<%=render 'header', header: @header%>
+<section class="content">
+    <div class="container-fluid">
+      <div class="row">
+          <div class="card">
+              <div class="card-header">
+                    <div class="col-md-8 offset-md-2">
+                      <%= form_tag(users_url, method: "get",format: :js, :remote=>true, :html => {:'data-type' => 'js'}) do  %>
+                          <div class="input-group">
+                              <input type="search" class="form-control form-control-lg" placeholder="Type your keywords here" name="search" value="<%= params[:search].presence || ''%>">
+                              <div class="input-group-append">
+                              <button type="submit" class="btn btn-lg btn-default">
+                              <i class="fa fa-search"></i>
+                              </button>
+                              </div>
+                          </div>
+                      <% end %>
+                  </div>
+              </div>
+              <div class="card-body p-0">
+                  <div id="users-listing" class="row">
+                  
+              </div>
+          </div>
+      </div>
+    </div>
+</section>
+<div id="user-data" data-user="<%= @labels.to_json %>"></div>
+<script>
+ $(function(){
+    $("#users-listing").html('<%= escape_javascript(render partial: "/chronic_condition_managements/hbac", locals: { vitals: @user_actions_hbac }) %>')
+  }) 
+ </script>
